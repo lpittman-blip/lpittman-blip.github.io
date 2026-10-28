@@ -25,7 +25,7 @@
     if (!statusInfo) return;
     const extra = chosenModel !== 'artemis' && (statusInfo.added_models || {})[chosenModel];
     const info = extra || statusInfo;
-    model.textContent = extra ? (modelPicker.selectedOptions[0]?.textContent || chosenModel) : (statusInfo.model || 'Artemis');
+    model.textContent = extra ? (modelPicker.selectedOptions[0]?.textContent || chosenModel) : 'Artemis';
     status.textContent = info.serving ? 'Model connected' : info.status === 'unavailable' ? 'Model unavailable' : 'Model not ready';
     status.dataset.state = info.serving ? 'available' : 'unavailable';
     modelNote.textContent = extra ? (extra.quality ? 'Early ' + extra.quality + ' — answers as code, ~20–60 s' : '') : '';
