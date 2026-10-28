@@ -15,13 +15,13 @@
 <link rel="stylesheet" href="../artemis-theme.css">
 <link rel="stylesheet" href="../mobile.css">
 <link rel="stylesheet" href="../workspace.css">
-<link rel="stylesheet" href="../chat-orb.css">
 <link rel="stylesheet" href="../aurora-core.css">
 <link rel="stylesheet" href="../aurora-shell.css">
+<link rel="stylesheet" href="../experience.css">
 <script>try{var p=localStorage.getItem('artemis-palette');if(p)document.documentElement.setAttribute('data-palette',p);if(localStorage.getItem('artemis-motion')==='paused')document.documentElement.setAttribute('data-motion','paused')}catch(e){}</script>
 <script src="../aurora.js" defer></script>
 </head>
-<body data-start="chat" class="orb-mode orb-empty">
+<body data-start="chat" class="is-chat-experience experience-empty">
 <div class="sky" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="stars"></i><i class="stars2"></i></div>
 <header class="nav">
 <div class="wrap">
@@ -39,6 +39,7 @@ Artemis AI
 <button class="btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
 </div>
 </header>
+<a class="skip-chat" href="#prompt">Skip to message</a>
 <main>
 <section class="view" id="view-chat" data-view="chat" >
 <div class="wrap">
@@ -89,6 +90,8 @@ Artemis AI
 <script src="../chat-stream.js" defer></script>
 <script src="../chat-render.js" defer></script>
 <script src="../workspace.js" defer></script>
-<script src="../chat-orb.js" defer></script>
+
+<button type="button" id="experience-motion" data-motion-toggle aria-pressed="false"><span class="i" aria-hidden="true">Ⅱ</span><span class="l">Pause motion</span></button>
+<script src="../experience.js" defer></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 // Authenticated chat against the Artemis gateway (credentialed CORS). Browser storage contains drafts, not conversation logs or credentials.
 (() => {
   const API_ORIGIN = 'https://api.artemisai-bycutlineindustries.studio';
+  const ASSET_BASE = new URL('.', document.currentScript.src);
   const { node, button, renderText, renderTools, codeBlock } = ArtemisUI;
   const root = document.getElementById('view-chat'), box = document.getElementById('msgs');
   const composer = root.querySelector('.composer'), form = document.getElementById('composer'), input = document.getElementById('prompt');
@@ -104,7 +105,8 @@
     const busy = !!flight; input.disabled = busy; send.disabled = false; send.type = busy ? 'button' : 'submit';
     send.setAttribute('aria-label', busy ? 'Stop' : 'Send'); form.setAttribute('aria-busy', String(busy));
     if (busy) send.replaceChildren(node('span', '', '■')); else send.innerHTML = sendIcon;
-    for (const element of [newButton, mobileNew, picker, branchPicker, search, archiveToggle]) element.disabled = busy || !user;
+    newButton.disabled = busy;
+    for (const element of [mobileNew, picker, branchPicker, search, archiveToggle]) element.disabled = busy || !user;
     sessionActions.querySelectorAll('button').forEach(element => element.disabled = busy || !active);
     list.querySelectorAll('button').forEach(element => element.disabled = busy);
     authButton.textContent = user ? 'Account' : 'Sign in';
@@ -126,7 +128,7 @@
     listNote.textContent = user ? (conversations.length ? 'Conversations are saved to your account.' : 'No matching conversations.') : 'Sign in for private conversations across devices.'; controls();
   }
   async function newConversation() {
-    if (!user) { try { sessionStorage.setItem('artemis.preauth', fields.text || ''); } catch {} showNotice('Sign in or create an account to send. Your message will be kept.'); openAuth(); return; } if (flight) return;
+    if (!user) { try { sessionStorage.setItem('artemis.preauth', input.value || ''); } catch {} showNotice('Sign in or create an account to send. Your message will be kept.'); openAuth(); return; } if (flight) return;
     if (active && !active.messages.length) { input.focus(); return; }
     await action(async () => { const conversation = await api('/api/conversations', { method: 'POST', body: {} }); showNotice(''); await refreshList(); await openConversation(conversation.id); });
   }
@@ -293,10 +295,10 @@
   authForm.setAttribute('aria-labelledby', authTitle.id); let signup = false;
   const email = node('input'), password = node('input'), authError = node('p', 'message-error'); authError.setAttribute('role', 'alert');
   email.type = 'email'; email.required = true; email.autocomplete = 'username'; email.id = 'account-email';
-  password.type = 'password'; password.required = true; password.minLength = 12; password.maxLength = 256; password.autocomplete = 'current-password'; password.id = 'account-password';
-  const emailLabel = node('label', '', 'Email'); emailLabel.htmlFor = email.id; const passwordLabel = node('label', '', 'Password (12+ characters)'); passwordLabel.htmlFor = password.id;
+  password.type = 'password'; password.required = true; password.minLength = 1; password.maxLength = 256; password.autocomplete = 'current-password'; password.id = 'account-password';
+  const emailLabel = node('label', '', 'Email'); emailLabel.htmlFor = email.id; const passwordLabel = node('label', '', 'Password'); passwordLabel.htmlFor = password.id;
   const authSubmit = node('button', 'btn btn-primary', 'Sign in'); authSubmit.type = 'submit';
-  const authSwitch = button('Create an account', () => { signup = !signup; authTitle.textContent = signup ? 'Create your Artemis account' : 'Sign in to Artemis'; authSubmit.textContent = signup ? 'Create account' : 'Sign in'; authSwitch.textContent = signup ? 'Already have an account? Sign in' : 'Create an account'; password.autocomplete = signup ? 'new-password' : 'current-password'; authError.textContent = ''; });
+  const authSwitch = button('Create an account', () => { signup = !signup; authTitle.textContent = signup ? 'Create your Artemis account' : 'Sign in to Artemis'; authSubmit.textContent = signup ? 'Create account' : 'Sign in'; authSwitch.textContent = signup ? 'Already have an account? Sign in' : 'Create an account'; password.autocomplete = signup ? 'new-password' : 'current-password'; password.minLength = signup ? 12 : 1; passwordLabel.textContent = signup ? 'Password (12+ characters)' : 'Password'; authError.textContent = ''; });
   authForm.append(authTitle, emailLabel, email, passwordLabel, password, authError, authSubmit, authSwitch, button('Back to Chat', () => document.querySelector('#navLinks [data-go=chat]').click())); accountPage.append(authForm);
   const accountSummary = node('div', 'auth-card'), accountEmail = node('p'); accountSummary.append(node('h2', '', 'Welcome back'), accountEmail, button('Open Chat', () => document.querySelector('#navLinks [data-go=chat]').click(), 'btn btn-primary'), button('Account settings', () => authButton.click())); accountSummary.hidden = true; accountPage.append(accountSummary);
   function accountState() { authForm.hidden = !!user; accountSummary.hidden = !user; accountNav.textContent = user ? 'Account' : 'Sign in'; accountEmail.textContent = user ? 'Signed in as ' + user.email : ''; }
@@ -354,5 +356,5 @@
   api('/api/status').then(info => { statusInfo = info; status.title = 'Availability does not certify answer quality.'; showModelStatus(); }).catch(() => { status.textContent = 'Connection unavailable'; });
   loadModels();
   api('/api/me').then(async response => { user = response.user; if (user) await signedIn(); else { accountState(); render(); } }).catch(() => showNotice('Login service is unavailable. Please try again.'));
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register(new URL('sw.js', ASSET_BASE).href, { scope: ASSET_BASE.pathname }).catch(() => {});
 })();
