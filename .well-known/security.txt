@@ -1,0 +1,4 @@
+Contact: mailto:support@artemisai-bycutlineindustries.studio
+Expires: 2027-10-31T23:59:59-04:00
+Preferred-Languages: en
+Canonical: https://artemisai-bycutlineindustries.studio/.well-known/security.txt

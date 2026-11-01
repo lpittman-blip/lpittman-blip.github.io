@@ -1,0 +1,21 @@
+/* Privacy Policy and Terms pages. Uses the Aurora tokens from aurora-core.css. */
+.legal-page { padding: 56px 0 24px; }
+.legal-page .wrap { max-width: 820px; }
+.legal-page h1 { font-size: clamp(34px, 5vw, 52px); line-height: 1.08; margin: 12px 0 10px; }
+.legal-page .updated { font: 13px/1.6 var(--mono); color: var(--muted); margin: 0 0 28px; }
+.legal-page .summary { margin: 0 0 36px; }
+.legal-page .summary .card-body { padding: 24px 26px; }
+.legal-page .summary p { margin: 0 0 10px; color: var(--text-2); }
+.legal-page .summary p:last-child { margin-bottom: 0; }
+.legal-page h2 { font-size: 22px; margin: 40px 0 12px; }
+.legal-page h3 { font-size: 17px; margin: 24px 0 8px; }
+.legal-page p, .legal-page li { color: var(--text-2); font-size: 16px; line-height: 1.7; }
+.legal-page ul { padding-left: 22px; }
+.legal-page li { margin: 6px 0; }
+.legal-page table { width: 100%; border-collapse: collapse; margin: 12px 0 8px; font-size: 15px; }
+.legal-page th, .legal-page td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.legal-page th { color: var(--text); font-weight: 600; }
+.legal-page .todo { color: var(--text); background: color-mix(in srgb, var(--s3, #8b5cf6) 22%, transparent); border-radius: 4px; padding: 0 4px; font-weight: 600; }
+.legal-page address { font-style: normal; color: var(--text-2); line-height: 1.7; }
+.legal-page .toc { columns: 2; column-gap: 32px; margin: 0 0 8px; }
+@media (max-width: 700px) { .legal-page .toc { columns: 1; } .legal-page table { font-size: 14px; } }
