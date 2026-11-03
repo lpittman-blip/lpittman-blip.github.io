@@ -28,8 +28,8 @@
 --ws-warn: #f2b84b;
 --ws-bad: #ff7b72;
 --ws-term: #a7f3d0;
---font-ui: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
---font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+--font-ui: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+--font-mono: "JetBrains Mono", "Mono Fallback", ui-monospace, "SFMono-Regular", Menlo, monospace;
 --radius: 22px;
 --radius-sm: 14px;
 --max: 1180px;
@@ -220,9 +220,6 @@ padding: 8px 8px 8px 18px; box-shadow: var(--shadow); }
 .prose h2 { color: var(--fg); font-size: 20px; margin-top: 18px; letter-spacing: -.01em; }
 .contact { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .contact code { font-family: var(--font-mono); background: var(--surface); padding: 8px 14px; border-radius: 999px; user-select: all; }
-.waitlist { display: flex; gap: 8px; flex-wrap: wrap; }
-.waitlist input { flex: 1; min-width: 0; background: var(--raise); border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; color: var(--fg); font: inherit; }
-.waitlist-done { color: var(--good); font-size: 14px; }
 .hero2 { padding-block: 64px 28px; display: grid; justify-items: center; text-align: center; gap: 26px; }
 .hero2-brand { display: inline-flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 500; letter-spacing: -.01em; }
 .hero2-brand .mk svg, .chatmock .mk svg { width: 24px; height: 24px; color: var(--accent); display: block; }

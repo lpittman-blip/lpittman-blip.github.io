@@ -23,8 +23,17 @@ function initShellRouter() {
     menuBtn.setAttribute("aria-expanded", "false");
     const urls = { chat: "/chat/", products: "/products/", account: "/account/" };
     if (push) {
-      const panel = new URLSearchParams(location.search).get("panel");
-      const next = (urls[name] || "/chat/") + (name === "chat" && panel ? "?panel=" + encodeURIComponent(panel) : "");
+      const current = new URLSearchParams(location.search);
+      const nextParams = new URLSearchParams();
+      if (name === "chat") {
+        const panel = current.get("panel");
+        if (panel) nextParams.set("panel", panel);
+      } else if (name === "account") {
+        const mode = current.get("mode");
+        if (mode) nextParams.set("mode", mode);
+      }
+      const qs = nextParams.toString();
+      const next = (urls[name] || "/chat/") + (qs ? "?" + qs : "");
       try { history.pushState(null, "", next); } catch (e) {}
       window.scrollTo(0, 0);
     }

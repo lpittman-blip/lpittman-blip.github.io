@@ -54,9 +54,6 @@
 .message-actions button { border: 0; background: none; color: var(--muted); font-size: 12px; cursor: pointer; padding: 4px 0; }
 .activity-group { display: grid; gap: 10px; padding-bottom: 24px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
 .activity-group h3 { font-size: 13px; font-weight: 500; overflow-wrap: anywhere; }
-.workspace-waitlist { font-size: 12px; color: var(--muted); }
-.workspace-waitlist summary { cursor: pointer; }
-.workspace-waitlist form { margin-top: 12px; }
 #view-chat .msg { min-width: 0; width: 100%; }
 #view-chat .msg.user { width: auto; }
 #view-chat .body { overflow-wrap: anywhere; }
