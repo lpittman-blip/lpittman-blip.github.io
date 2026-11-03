@@ -55,7 +55,19 @@ body.is-chat-experience .workspace-prompts {display:grid;grid-template-columns:1
 body.is-chat-experience .workspace-prompts button {min-height:54px;padding:15px 18px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(14,20,46,.55);text-align:left;color:var(--text-2);font:12px var(--sans);transition:border-color .2s,background .2s,transform .2s;}
 body.is-chat-experience .workspace-prompts button:hover {border-color:color-mix(in srgb,var(--s2) 65%,transparent);background:color-mix(in srgb,var(--s2) 10%,transparent);color:var(--text);transform:translateY(-2px);}
 body.is-chat-experience .workspace-welcome>.btn-primary {font-size:12px;padding:11px 20px;min-height:40px;}
-body.is-chat-experience .workspace-waitlist {font-size:11px;color:#9098b8;}
+/* The header is built in workspace.js. Hold its height so the message column
+   does not jump down when that header is inserted. Heights match the rendered
+   header: 116px when the status wraps, 99px on a wider phone, 115px on desktop. */
+body.is-chat-experience .convo:not(:has(> .workspace-header)) > .msgs {margin-top:115px;}
+@media (max-width:899px) {
+  body.is-chat-experience .convo:not(:has(> .workspace-header)) > .msgs {margin-top:99px;}
+}
+@media (max-width:480px) {
+  body.is-chat-experience .convo:not(:has(> .workspace-header)) > .msgs {margin-top:116px;}
+}
+/* Measured signed-out column on a 412px-wide phone. The cap keeps a short
+   screen from pushing the composer out of the 100dvh shell. */
+body.is-chat-experience #workspace-panel-chat {min-height:min(511px, calc(100dvh - 280px));}
 .experience-orbit {width:106px;height:106px;position:relative;flex:none;margin:0 0 6px;isolation:isolate;}
 .experience-orbit:before {content:'';position:absolute;inset:32%;border-radius:50%;background:radial-gradient(circle at 35% 25%,#dcf4ff,var(--s1) 45%,var(--s2));box-shadow:0 0 24px color-mix(in srgb,var(--s1) 65%,transparent),0 0 65px color-mix(in srgb,var(--s2) 35%,transparent);}
 .experience-orbit i {position:absolute;inset:13%;border:1px solid color-mix(in srgb,var(--s1) 42%,transparent);border-radius:50%;transform:rotateX(55deg) rotate(-35deg);animation:experience-orbit 22s linear infinite;}

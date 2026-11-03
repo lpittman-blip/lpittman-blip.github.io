@@ -42,7 +42,7 @@
   const header = node('div', 'workspace-header'); header.append(top, modelRow); convo.prepend(header);
   const mobile = node('div', 'session-mobile'), picker = node('select'); picker.setAttribute('aria-label', 'Conversation');
   picker.addEventListener('change', () => openConversation(picker.value));
-  const mobileNew = button('＋ New', newConversation, 'mobile-new'); mobile.append(picker, mobileNew); header.append(mobile);
+  const mobileNew = button('＋ New', newConversation, 'mobile-new'); mobileNew.setAttribute('data-track', 'chat_new'); mobile.append(picker, mobileNew); header.append(mobile);
   const tabs = node('div', 'workspace-tabs'); tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', 'Workspace views');
   const panels = { chat: box, activity: node('div', 'workspace-panel'), code: node('div', 'workspace-panel') }, tabButtons = {};
   for (const [name, label] of [['chat', 'Chat'], ['activity', 'Activity'], ['code', 'Code']]) {
@@ -62,6 +62,7 @@
   branchPicker.addEventListener('change', () => action(async () => { await api('/api/conversations/' + active.id, { method: 'PATCH', body: { head_id: branchPicker.value } }); head = branchPicker.value; render(); }));
   sidebar.replaceChildren();
   const newButton = button('＋ New chat', newConversation, 'btn new'), search = node('input', 'session-search');
+  newButton.setAttribute('data-track', 'chat_new');
   search.type = 'search'; search.placeholder = 'Search conversations'; search.setAttribute('aria-label', 'Search conversations');
   const archiveToggle = button('Show archived', () => { archived = !archived; archiveToggle.textContent = archived ? 'Show active' : 'Show archived'; refreshList(); }, 'session-archive-toggle');
   const list = node('div', 'session-list'), listNote = node('p', 'session-note', 'Sign in for private, saved conversations across devices.');
@@ -77,9 +78,6 @@
   })));
   sidebar.append(newButton, search, archiveToggle, list, listNote, sessionActions);
   let searchTimer; search.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(refreshList, 200); });
-  const waitlist = node('details', 'workspace-waitlist'); waitlist.append(node('summary', '', 'Get notified when Artemis is ready'));
-  const oldWaitlist = document.getElementById('waitlist'), waitlistResult = document.getElementById('wlDone');
-  if (oldWaitlist) waitlist.append(oldWaitlist); if (waitlistResult) waitlist.append(waitlistResult);
 
   async function api(path, options = {}) {
     const response = await fetch(API_ORIGIN + path, { method: options.method || 'GET', credentials: 'include', signal: options.signal || AbortSignal.timeout(15000),
@@ -212,9 +210,20 @@
     box.replaceChildren(); const messages = branchMessages();
     if (!messages.length) {
       const welcome = node('div', 'workspace-welcome'), prompts = node('div', 'workspace-prompts');
-      welcome.append(node('span', 'eyebrow', 'YOUR ARTEMIS WORKSPACE'), node('h2', '', 'What would you like to work on?'), node('p', '', user ? 'Start a conversation. Your messages, branches, and results stay in your account.' : 'Sign in to start a private conversation and continue it on another device.'));
-      for (const [label, text] of [['Write & explain code', 'Help me write and explain a Python function.'], ['Research a question', 'Search for current Python documentation and cite your sources.'], ['Work through a problem', 'Help me break down a problem into clear steps.'], ['Run a calculation', 'Use Python to calculate the sum of squares from 1 to 20.']]) prompts.append(button(label, () => { if (!user) { openAuth(); return; } input.value = text; input.focus(); }));
-      welcome.append(prompts); if (!user) welcome.append(button('Sign in / create account', openAuth, 'btn btn-primary')); welcome.append(waitlist); box.append(welcome);
+      const orbit = node('div', 'experience-orbit'); orbit.setAttribute('aria-hidden', 'true'); orbit.append(node('i'), node('i'), node('i'));
+      welcome.append(orbit, node('span', 'eyebrow', 'YOUR ARTEMIS WORKSPACE'), node('h2', '', 'What would you like to create?'), node('p', '', user ? 'Start a conversation. Your messages, branches, and results stay in your account.' : 'Sign in to start a private conversation and continue it on another device.'));
+      for (const [label, text] of [['Write & explain code', 'Help me write and explain a Python function.'], ['Research a question', 'Search for current Python documentation and cite your sources.'], ['Work through a problem', 'Help me break down a problem into clear steps.'], ['Run a calculation', 'Use Python to calculate the sum of squares from 1 to 20.']]) {
+        const chip = button(label, () => { if (!user) { openAuth(); return; } input.value = text; input.focus(); });
+        chip.setAttribute('data-track', 'chat_prompt_' + label.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''));
+        prompts.append(chip);
+      }
+      welcome.append(prompts);
+      if (!user) {
+        const createAccount = button('Sign in / create account', () => openAuth(true), 'btn btn-primary');
+        createAccount.setAttribute('data-track', 'chat_sign_in_create_account');
+        welcome.append(createAccount);
+      }
+      box.append(welcome);
     } else for (const message of messages) box.append(messageElement(message));
     renderExtras(messages); renderBranches(); renderList(); selectPanel(selected); controls();
   }
@@ -286,6 +295,7 @@
     if (!flight?.id) return; const rid = flight.id; send.disabled = true;
     await action(async () => { await api('/api/requests/' + rid + '/cancel', { method: 'POST', body: {} }); showNotice('Stopping… Partial output will be retained.'); });
   }
+  send.setAttribute('data-track', 'chat_send');
   form.addEventListener('submit', event => { event.preventDefault(); const text = input.value.trim(); if (text) action(() => submit({ text })); });
   input.addEventListener('keydown', event => { if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); form.requestSubmit(); } });
   send.addEventListener('click', () => { if (flight) stop(); });
@@ -298,15 +308,56 @@
   password.type = 'password'; password.required = true; password.minLength = 1; password.maxLength = 256; password.autocomplete = 'current-password'; password.id = 'account-password';
   const emailLabel = node('label', '', 'Email'); emailLabel.htmlFor = email.id; const passwordLabel = node('label', '', 'Password'); passwordLabel.htmlFor = password.id;
   const authSubmit = node('button', 'btn btn-primary', 'Sign in'); authSubmit.type = 'submit';
-  const authSwitch = button('Create an account', () => { signup = !signup; authTitle.textContent = signup ? 'Create your Artemis account' : 'Sign in to Artemis'; authSubmit.textContent = signup ? 'Create account' : 'Sign in'; authSwitch.textContent = signup ? 'Already have an account? Sign in' : 'Create an account'; password.autocomplete = signup ? 'new-password' : 'current-password'; password.minLength = signup ? 12 : 1; passwordLabel.textContent = signup ? 'Password (12+ characters)' : 'Password'; authError.textContent = ''; });
+  function setMode(isSignup) {
+    signup = isSignup;
+    authTitle.textContent = signup ? 'Create your Artemis account' : 'Sign in to Artemis';
+    authSubmit.textContent = signup ? 'Create account' : 'Sign in';
+    authSwitch.textContent = signup ? 'Already have an account? Sign in' : 'Create an account';
+    password.autocomplete = signup ? 'new-password' : 'current-password';
+    password.minLength = signup ? 12 : 1;
+    passwordLabel.textContent = signup ? 'Password (12+ characters)' : 'Password';
+    authError.textContent = '';
+  }
+  const authSwitch = button('Create an account', () => setMode(!signup));
+  const wantsSignup = /(^|[?&])mode=signup\b/.test(location.search) || location.hash === '#signup';
+  if (wantsSignup) setMode(true);
   authForm.append(authTitle, emailLabel, email, passwordLabel, password, authError, authSubmit, authSwitch, button('Back to Chat', () => document.querySelector('#navLinks [data-go=chat]').click())); accountPage.append(authForm);
   const accountSummary = node('div', 'auth-card'), accountEmail = node('p'); accountSummary.append(node('h2', '', 'Welcome back'), accountEmail, button('Open Chat', () => document.querySelector('#navLinks [data-go=chat]').click(), 'btn btn-primary'), button('Account settings', () => authButton.click())); accountSummary.hidden = true; accountPage.append(accountSummary);
   function accountState() { authForm.hidden = !!user; accountSummary.hidden = !user; accountNav.textContent = user ? 'Account' : 'Sign in'; accountEmail.textContent = user ? 'Signed in as ' + user.email : ''; }
-  function openAuth() { accountNav.click(); email.focus(); }
+  function openAuth(asSignup) {
+    if (typeof asSignup === 'boolean') setMode(asSignup);
+    const params = new URLSearchParams(location.search);
+    if (signup) params.set('mode', 'signup'); else params.delete('mode');
+    const qs = params.toString();
+    try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch (e) {}
+    accountNav.click(); email.focus();
+  }
+  let authInvalidTracked = false;
+  authSubmit.addEventListener('pointerdown', () => { authInvalidTracked = false; });
+  authForm.addEventListener('keydown', event => { if (event.key === 'Enter') authInvalidTracked = false; });
+  authForm.addEventListener('invalid', () => {
+    if (authInvalidTracked) return;
+    authInvalidTracked = true;
+    if (window.artemisTrack) window.artemisTrack('auth_validation_failed', { mode: signup ? 'signup' : 'signin', field: email.validity.valid ? 'password' : 'email' });
+  }, true);
   authForm.addEventListener('submit', async event => {
-    event.preventDefault(); authSubmit.disabled = true;
-    try { const response = await api('/api/auth/' + (signup ? 'signup' : 'login'), { method: 'POST', body: { email: email.value, password: password.value } }); user = response.user; accountState(); await signedIn(); document.querySelector('#navLinks [data-go=chat]').click(); }
-    catch (error) { authError.textContent = error.message; }
+    event.preventDefault();
+    if (!authForm.checkValidity()) {
+      if (window.artemisTrack) window.artemisTrack('auth_validation_failed', { mode: signup ? 'signup' : 'signin', field: email.validity.valid ? 'password' : 'email' });
+      authForm.reportValidity();
+      return;
+    }
+    authSubmit.disabled = true;
+    const mode = signup ? 'signup' : 'signin';
+    try {
+      const response = await api('/api/auth/' + (signup ? 'signup' : 'login'), { method: 'POST', body: { email: email.value, password: password.value } });
+      if (window.artemisTrack) window.artemisTrack(signup ? 'signup_success' : 'login_success', { mode });
+      user = response.user; accountState(); await signedIn(); document.querySelector('#navLinks [data-go=chat]').click();
+    }
+    catch (error) {
+      authError.textContent = error.message;
+      if (window.artemisTrack) window.artemisTrack('auth_failed', { mode, status: typeof error.code === 'number' ? error.code : 0 });
+    }
     finally { password.value = ''; authSubmit.disabled = false; }
   });
   async function signedIn() {
@@ -327,7 +378,7 @@
     node('p', 'session-note', 'Deletion removes live database records. Hosting backups require a separate expiry policy.'),
     button('Export this conversation (JSON)', () => exportConversation('json')), button('Export this conversation (Markdown)', () => exportConversation('markdown')),
     button('Export my account', () => action(async () => download(await api('/api/account/export'), 'artemis-account.json'))),
-    button('Sign out', () => action(async () => { if (flight?.id) await api('/api/requests/' + flight.id + '/cancel', { method: 'POST', body: {} }); flight?.ctrl?.abort(); saveDrafts(); stopSpeech(); await api('/api/auth/logout', { method: 'POST', body: {} }); user = active = flight = null; conversations = []; drafts = pending = {}; input.value = ''; accountDialog.close(); signup = false; authTitle.textContent = 'Sign in to Artemis'; authSubmit.textContent = 'Sign in'; authSwitch.textContent = 'Create an account'; password.autocomplete = 'current-password'; authError.textContent = ''; accountState(); showNotice('Signed out.'); render(); })),
+    button('Sign out', () => action(async () => { if (flight?.id) await api('/api/requests/' + flight.id + '/cancel', { method: 'POST', body: {} }); flight?.ctrl?.abort(); saveDrafts(); stopSpeech(); await api('/api/auth/logout', { method: 'POST', body: {} }); user = active = flight = null; conversations = []; drafts = pending = {}; input.value = ''; accountDialog.close(); setMode(false); accountState(); showNotice('Signed out.'); render(); })),
     button('Close', () => accountDialog.close())); document.body.append(accountDialog);
   authButton.addEventListener('click', () => { if (user) action(async () => { const settings = await api('/api/settings'); retention.value = settings.retention_days; }); });
   function download(value, name, type = 'application/json') { const blob = new Blob([typeof value === 'string' ? value : JSON.stringify(value, null, 2)], { type }), url = URL.createObjectURL(blob), a = node('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
