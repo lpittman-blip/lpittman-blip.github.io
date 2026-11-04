@@ -12,6 +12,7 @@ body.home-bg {
   background: radial-gradient(ellipse at 20% 30%, #3b0764 0%, transparent 50%),
               radial-gradient(ellipse at 80% 70%, #1e1b4b 0%, transparent 50%),
               #0a0014;
+  background-size: 200% 200%;
   animation: drift 20s ease-in-out infinite alternate;
 }
 
