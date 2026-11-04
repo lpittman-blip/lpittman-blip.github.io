@@ -8,7 +8,21 @@
 <link rel="icon" href="../artemis-icon.svg">
 <link rel="apple-touch-icon" href="../artemis-icon-192.png">
 <meta name="theme-color" content="#05070F">
-<meta name="description" content="Artemis AI chat, products, and account sign-in.">
+<meta name="description" content="Artemis products from Cutline Industries: Artemis Chat and the Workspace, live today, plus the Artemis CLI and API for developers by request.">
+<link rel="canonical" href="https://artemisai-bycutlineindustries.studio/products/">
+<meta property="og:title" content="Products · Artemis AI">
+<meta property="og:description" content="Artemis products from Cutline Industries: Artemis Chat and the Workspace, live today, plus the Artemis CLI and API for developers by request.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://artemisai-bycutlineindustries.studio/products/">
+<meta property="og:site_name" content="Artemis AI">
+<meta property="og:image" content="https://artemisai-bycutlineindustries.studio/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Artemis AI by Cutline Industries. Chat with it. Code with it. Build with it.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Products · Artemis AI">
+<meta name="twitter:description" content="Artemis products from Cutline Industries: Artemis Chat and the Workspace, live today, plus the Artemis CLI and API for developers by request.">
+<meta name="twitter:image" content="https://artemisai-bycutlineindustries.studio/og-image.png">
 <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="/fonts.css"></noscript>
@@ -40,8 +54,8 @@ Artemis AI
 <button class="btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
 </div>
 </header>
-<a class="skip-chat" href="#prompt">Skip to message</a>
-<main>
+<a class="skip-chat" href="#main">Skip to main content</a>
+<main id="main" tabindex="-1">
 <section class="view" id="view-chat" data-view="chat" hidden>
 <div class="wrap">
 <div class="chat">
@@ -49,7 +63,17 @@ Artemis AI
 <button class="btn new" type="button">New chat</button>
 </aside>
 <div class="convo">
-<div class="msgs" id="msgs"></div>
+<div class="msgs" id="msgs">
+<noscript>
+<div class="msg sys">
+<span class="who">Artemis</span>
+<p>Artemis Chat is live. Sign in or create an account to start a conversation; your conversations are saved to your account.</p>
+<p>While Artemis's own model is trained, Chat is answered by a labelled bootstrap model hosted on Microsoft Azure AI, a third-party provider. See the <a href="../privacy/">Privacy Policy</a>.</p>
+<p><a class="btn btn-primary" href="../account/?mode=signup">Sign in or create an account</a></p>
+<p>Artemis Chat needs JavaScript. Turn it on to chat, or email <a href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20support">support@artemisai-bycutlineindustries.studio</a>.</p>
+</div>
+</noscript>
+</div>
 <div class="composer">
 <form id="composer">
 <label for="prompt" class="eyebrow" style="position:absolute;left:-9999px">Message Artemis</label>
@@ -72,10 +96,10 @@ Artemis AI
 </div></div>
 </section>
 <section class="view" id="view-account" data-view="account" hidden>
-<div class="wrap"><div class="page-head"><span class="eyebrow">Your account</span><h1>Your space with Artemis.</h1><p>Create an account or sign in to keep your Artemis conversations private and pick them up on any device. You can export your data or delete your chats from your account settings at any time.</p></div><div id="account-page-content"></div></div>
+<div class="wrap"><div class="page-head"><span class="eyebrow">Your account</span><h1>Your space with Artemis.</h1><p>Create an account or sign in to keep your Artemis conversations private and pick them up on any device. You can export your data or delete your chats from your account settings at any time.</p></div><div id="account-page-content"><noscript><div class="auth-card"><h2>Sign in to Artemis</h2><p>Signing in and creating an account need JavaScript, because your password is sent only to the Artemis gateway and cleared from the form by the page script. Turn on JavaScript and reload this page. If you can't, email <a href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20account%20help">support@artemisai-bycutlineindustries.studio</a> for help with your account.</p></div></noscript></div></div>
 </section>
 </main>
-<footer class="shell-foot"><div class="wrap"><p>© 2026 Cutline Industries · Bronx, NY · <a href="../">Artemis AI home</a> · <a href="mailto:support@artemisai-bycutlineindustries.studio">Support</a></p></div></footer>
+<footer class="shell-foot"><div class="wrap"><p>© 2026 Cutline Industries LLC · Bronx, NY · <a href="../">Artemis AI home</a> · <a href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20support">Support</a> · <a href="../privacy/">Privacy</a> · <a href="../terms/">Terms</a></p><p>Website hosted on GitHub Pages. Chat is currently answered by a bootstrap model on Microsoft Azure AI.</p></div></footer>
 <script src="../app.js" defer></script>
 <script src="../polish.js" defer></script>
 <script src="../chat-stream.js" defer></script>

@@ -18,3 +18,15 @@ gateway at `api.artemisai-bycutlineindustries.studio` with credentialed CORS.
 
 `liftoff.css` / `liftoff.js` are the previous homepage and are no longer loaded.
 `/sign-in/`, `/sign-up/`, `/signin/`, `/signup/` and `/login/` redirect to `/account/`.
+
+## Legal, SEO and security files
+
+| File | Role |
+|---|---|
+| `privacy/`, `terms/` | Privacy Policy and Terms of Service (styled by `legal.css`). Items marked `[OWNER TO CONFIRM: …]` still need the owner's answer. |
+| `robots.txt`, `sitemap.xml` | Crawl rules and the list of indexable pages. `/chat/` and `/account/` carry `noindex` instead of a robots block, so crawlers can read it. |
+| `.well-known/security.txt` | Security contact (RFC 9116). Renew `Expires` before 2027-10-31. |
+| `og-image.png` | 1200×630 link preview used by every page's Open Graph and Twitter tags. |
+| `artemisai/` | Old copy of the app shell, now a redirect to `/chat/`. |
+
+`node tests/status-card.test.cjs` checks the homepage status card renders from a `/api/status` payload.

@@ -10,6 +10,16 @@
   <meta property="og:description" content="Chat with it. Code with it. Build with it. Open Artemis Chat at artemisai-bycutlineindustries.studio/chat.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://artemisai-bycutlineindustries.studio/">
+  <meta property="og:site_name" content="Artemis AI">
+  <meta property="og:image" content="https://artemisai-bycutlineindustries.studio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Artemis AI by Cutline Industries. Chat with it. Code with it. Build with it.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Artemis AI by Cutline Industries">
+  <meta name="twitter:description" content="Chat with it. Code with it. Build with it. Open Artemis Chat at artemisai-bycutlineindustries.studio/chat.">
+  <meta name="twitter:image" content="https://artemisai-bycutlineindustries.studio/og-image.png">
+  <meta name="twitter:image:alt" content="Artemis AI by Cutline Industries. Chat with it. Code with it. Build with it.">
   <link rel="canonical" href="https://artemisai-bycutlineindustries.studio/">
   <script>try{var p=localStorage.getItem('artemis-palette');if(p)document.documentElement.setAttribute('data-palette',p);if(localStorage.getItem('artemis-motion')==='paused')document.documentElement.setAttribute('data-motion','paused')}catch(e){}</script>
   <link rel="preconnect" href="https://api.artemisai-bycutlineindustries.studio">
@@ -86,7 +96,7 @@
 <main id="content">
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap">
-      <a class="status-chip" href="#how" data-track="hero_status"><span class="dot" id="hero-dot"></span><span id="hero-state">Checking Artemis Chat…</span></a>
+      <a class="status-chip" href="#how" data-track="hero_status"><span class="dot" id="hero-dot"></span><span id="hero-state">Artemis Chat · see live status</span></a>
       <h1 id="hero-title">Chat with it. Code with it. <span class="grad-text">Build with it.</span></h1>
       <p class="lede">Artemis is the AI assistant made by Cutline Industries. Ask questions, research with the web, and write, fix and explain code — in private conversations saved to your account.</p>
       <div class="ctas">
@@ -132,7 +142,7 @@
       <dl class="facts">
         <div class="rv"><dt>Where</dt><dd>In your browser at /chat, on desktop and mobile</dd></div>
         <div class="rv"><dt>Your data</dt><dd>Conversations are saved to your account and are not automatically used to train Artemis</dd></div>
-        <div class="rv"><dt>Design rule</dt><dd>Artemis's own model never calls an outside AI model in its reasoning</dd></div>
+        <div class="rv"><dt>Design rule</dt><dd>Artemis's own model never calls an outside AI model in its reasoning. Until it is ready, Chat runs on a third-party bootstrap model hosted on Microsoft Azure</dd></div>
         <div class="rv"><dt>Made by</dt><dd>Cutline Industries, Bronx, New York</dd></div>
       </dl>
     </div>
@@ -227,17 +237,18 @@
           <div class="card-top"><span class="dot" id="live-dot" aria-hidden="true"></span><span id="live-title">Live · read from the gateway</span></div>
           <div class="card-body" aria-live="polite">
             <ul class="kv">
-              <li>Chat<b id="st-chat">Checking…</b></li>
-              <li>Answering model<b id="st-model">Checking…</b></li>
-              <li>Web search<b id="st-search">Checking…</b></li>
-              <li>Read a web page<b id="st-fetch">Checking…</b></li>
-              <li>Conversations<b id="st-storage">Checking…</b></li>
-              <li>Voice input<b id="st-voice">Checking…</b></li>
-              <li>File upload<b id="st-upload">Checking…</b></li>
-              <li>Gateway<b id="st-gw">Checking…</b></li>
-              <li>Right now<b id="st-queue">Checking…</b></li>
+              <li>Chat<b id="st-chat">Live check runs in your browser</b></li>
+              <li>Answering model<b id="st-model">Bootstrap model on Microsoft Azure AI (not Artemis’s own weights)</b></li>
+              <li>Web search<b id="st-search">Wikipedia</b></li>
+              <li>Read a web page<b id="st-fetch">Public web pages</b></li>
+              <li>Conversations<b id="st-storage">Saved to your account</b></li>
+              <li>Voice input<b id="st-voice">Not yet</b></li>
+              <li>File upload<b id="st-upload">Not yet</b></li>
+              <li>Gateway<b id="st-gw">Live check runs in your browser</b></li>
+              <li>Right now<b id="st-queue">—</b></li>
             </ul>
             <p class="src">From api.artemisai-bycutlineindustries.studio /api/status and /api/health, measured in your browser · <span id="st-when">not checked yet</span></p>
+            <noscript><p class="src">The values above are the expected setup. Turn on JavaScript to see the live readings.</p></noscript>
           </div>
         </article>
       </div>
@@ -250,12 +261,14 @@
       <h2 class="rv" id="about-title">Made by Cutline Industries in the Bronx, New York.</h2>
       <div class="about">
         <article class="card rv"><div class="card-body">
-          <p>Artemis AI is a product of Cutline Industries. The company builds and hosts Artemis and is training its model in-house.</p>
+          <p>Artemis AI is a product of Cutline Industries LLC. The company builds and runs Artemis and is training its model in-house.</p>
           <p>Artemis was designed around one rule: its own model never sends your request to someone else's AI model. That is meant for teams that can't send their code to a third-party model provider.</p>
+          <p class="disclosure"><b>What happens today:</b> Artemis's own model is still in training, so Artemis Chat is currently answered by a bootstrap model hosted on Microsoft Azure AI services, a third-party provider. The messages you send in Chat go to Microsoft Azure to generate replies. Until Artemis's own model takes over, don't use Chat for code or data that must not reach a third-party model provider. Details are in the <a class="tlink" href="/privacy/" data-track="about_privacy">Privacy Policy</a>.</p>
         </div></article>
         <article class="card rv"><div class="card-body">
           <address>
-            Cutline Industries<br>
+            Cutline Industries LLC<br>
+            769 E 214th St<br>
             Bronx, NY 10467, United States<br>
             <a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio" data-track="about_email">support@artemisai-bycutlineindustries.studio</a><br>
             <a class="tlink" href="https://cutline-industries.studio" rel="noopener" data-track="about_company_site">cutline-industries.studio</a>
@@ -291,7 +304,9 @@
         <a class="tlink" href="/products/" data-track="footer_products">Products</a>
         <a class="tlink" href="/account/" data-track="footer_sign_in">Sign in</a>
         <a class="tlink" href="#how" data-track="footer_status">Status</a>
-        <a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio" data-track="footer_support">Support</a>
+        <a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20support" data-track="footer_support">Support</a>
+        <a class="tlink" href="/privacy/" data-track="footer_privacy">Privacy</a>
+        <a class="tlink" href="/terms/" data-track="footer_terms">Terms</a>
       </nav>
       <div class="controls">
         <span class="lbl" id="pal-lbl">Palette</span>
@@ -305,7 +320,7 @@
         <button class="pause" type="button" data-motion-toggle aria-pressed="false" data-track="motion_toggle"><span class="i" aria-hidden="true">❚❚</span><span class="l">Pause motion</span></button>
       </div>
     </div>
-    <p class="legal">© 2026 Cutline Industries · Bronx, NY · Hosted by Cutline Industries.</p>
+    <p class="legal">© 2026 Cutline Industries LLC · Bronx, NY · Website hosted on GitHub Pages · Chat currently answered by a bootstrap model on Microsoft Azure AI · <a class="tlink" href="/privacy/">Privacy</a> · <a class="tlink" href="/terms/">Terms</a></p>
   </div>
 </footer>
 </body>
