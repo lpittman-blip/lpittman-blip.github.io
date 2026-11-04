@@ -24,6 +24,13 @@
   <link rel="stylesheet" href="home-bg.css">
   <script src="analytics.js" defer></script>
   <script src="aurora.js" defer></script>
+  <style>
+    .models { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .model-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem; }
+    .model-card h3 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+    .model-card .tag { display: inline-block; font-size: 0.75rem; opacity: 0.7; margin-bottom: 0.5rem; }
+    .model-card p { margin: 0; color: var(--muted, #aaa); font-size: 0.95rem; }
+  </style>
 </head>
 <body class="home-bg">
 <div class="bg-animate" aria-hidden="true"></div>
@@ -75,6 +82,31 @@
         <a class="btn secondary" href="/account/?mode=signup" data-track="hero_create_account">Create an account</a>
       </div>
       <p class="note">Account required to chat · email and password</p>
+    </div>
+  </section>
+
+  <section class="band" id="family" aria-labelledby="family-title">
+    <div class="wrap">
+      <span class="eyebrow g">Model Family</span>
+      <h2 id="family-title">Artemis models</h2>
+      <p class="intro">Three models. One assistant. Built by Cutline Industries.</p>
+      <div class="models">
+        <article class="model-card">
+          <div class="tag">From-scratch flagship</div>
+          <h3>Artemis Prime</h3>
+          <p>Custom mixture-of-experts architecture trained from random initialization. Coming soon.</p>
+        </article>
+        <article class="model-card">
+          <div class="tag">14B main model</div>
+          <h3>Artemis Apex</h3>
+          <p>Self-improving fine-tune of Qwen2.5-14B. Balanced for reasoning and everyday use.</p>
+        </article>
+        <article class="model-card">
+          <div class="tag">7B fast model</div>
+          <h3>Artemis Swift</h3>
+          <p>Self-improving fine-tune of Qwen2.5-7B. Optimized for speed and high volume.</p>
+        </article>
+      </div>
     </div>
   </section>
 
