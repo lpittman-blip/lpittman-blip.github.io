@@ -6,8 +6,6 @@
 .nav .wrap > .btn-primary { display: inline-flex; margin-left: auto; padding: 8px 14px; }
 }
 @media (max-width: 480px) {
-.waitlist input { flex-basis: 100%; }
-.waitlist .btn { width: 100%; justify-content: center; }
 .kpi .v { font-size: 17px; }
 }
 @media (max-width: 360px) {
