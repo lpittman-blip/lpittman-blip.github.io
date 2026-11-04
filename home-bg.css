@@ -1,0 +1,47 @@
+/* Homepage-only animated background (loaded only by /index.html). */
+body.home-bg {
+  background: #0a0014;
+  overflow-x: hidden;
+}
+
+.bg-animate {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 20% 30%, #3b0764 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 70%, #1e1b4b 0%, transparent 50%),
+              #0a0014;
+  animation: drift 20s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  0%   { background-position: 0% 0%, 100% 100%; }
+  100% { background-position: 100% 50%, 0% 50%; }
+}
+
+/* Optional soft particles */
+.bg-animate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(1px 1px at 20% 30%, white 50%, transparent),
+                    radial-gradient(1px 1px at 60% 70%, white 50%, transparent),
+                    radial-gradient(1.5px 1.5px at 40% 50%, white 50%, transparent);
+  background-size: 200px 200px;
+  animation: twinkle 8s linear infinite;
+  opacity: 0.4;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.2; }
+}
+
+/* Let the new background show through the existing sky layer (its aurora and stars stay). */
+body.home-bg .sky { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-animate, .bg-animate::before { animation: none; }
+}
