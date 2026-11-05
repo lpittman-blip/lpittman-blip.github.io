@@ -189,7 +189,7 @@
       actions.append(button(message.status === 'ok' ? 'Regenerate' : 'Retry', () => submit({ regenerate_message_id: message.id })));
       if (message.status === 'ok') {
         for (const [label, rating] of [['Helpful', 1], ['Not helpful', -1]]) actions.append(button(label, () => action(async () => { await api('/api/feedback', { method: 'POST', body: { message_id: message.id, rating } }); showNotice('Feedback saved.'); })));
-        if ('speechSynthesis' in window) actions.append(button('Read aloud', () => readAloud(message)));
+        if ('speechSynthesis' in window) actions.append(button(speechMessage === message ? 'Stop' : 'Read aloud', () => { if (speechMessage === message) stopSpeech(); else readAloud(message); }, 'voice-toggle'));
       }
     }
     actions.querySelectorAll('button').forEach(b => b.disabled = !!flight); el.append(actions); return el;
@@ -207,11 +207,13 @@
     if (!codeCount) panels.code.append(node('p', 'workspace-empty', 'Code from answers and Python output appear here.'));
   }
   function render() {
+    const gap = box.scrollHeight - box.scrollTop - box.clientHeight;
+    const stick = box.scrollHeight < 8 || gap < 160;
+    const prev = box.scrollTop;
     box.replaceChildren(); const messages = branchMessages();
     if (!messages.length) {
       const welcome = node('div', 'workspace-welcome'), prompts = node('div', 'workspace-prompts');
-      const orbit = node('div', 'experience-orbit'); orbit.setAttribute('aria-hidden', 'true'); orbit.append(node('i'), node('i'), node('i'));
-      welcome.append(orbit, node('span', 'eyebrow', 'YOUR ARTEMIS WORKSPACE'), node('h2', '', 'What would you like to create?'), node('p', '', user ? 'Start a conversation. Your messages, branches, and results stay in your account.' : 'Sign in to start a private conversation and continue it on another device.'));
+      welcome.append(node('span', 'eyebrow', 'YOUR ARTEMIS WORKSPACE'), node('h2', '', 'What would you like to create?'), node('p', '', user ? 'Start a conversation. Your messages, branches, and results stay in your account.' : 'Sign in to start a private conversation and continue it on another device.'));
       for (const [label, text] of [['Write & explain code', 'Help me write and explain a Python function.'], ['Research a question', 'Search for current Python documentation and cite your sources.'], ['Work through a problem', 'Help me break down a problem into clear steps.'], ['Run a calculation', 'Use Python to calculate the sum of squares from 1 to 20.']]) {
         const chip = button(label, () => { if (!user) { openAuth(); return; } input.value = text; input.focus(); });
         chip.setAttribute('data-track', 'chat_prompt_' + label.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''));
@@ -226,6 +228,7 @@
       box.append(welcome);
     } else for (const message of messages) box.append(messageElement(message));
     renderExtras(messages); renderBranches(); renderList(); selectPanel(selected); controls();
+    box.scrollTop = stick ? box.scrollHeight : prev;
   }
   async function submit(fields) {
     if (!user) { openAuth(); return; } if (flight) return;
@@ -265,8 +268,8 @@
       else if (event.type === 'tool_call') message.events.push({ name: event.name, pending: true, summary: event.name + ' · running' });
       else if (event.type === 'tool_result') { const i = message.events.findLastIndex(e => e.pending && e.name === event.name); const result = { ...event, pending: false }; if (i >= 0) message.events[i] = result; else message.events.push(result); }
       else if (event.type === 'state') { message.state = event.state; showNotice(event.state === 'queued' ? 'Queued — your message is saved.' : event.state === 'stopping' ? 'Stopping generation…' : 'Generating…'); }
-      else if (event.type === 'done' || event.type === 'error') { terminal = true; message.text = event.answer || text; message.state = event.state; message.status = event.type === 'done' ? 'ok' : 'error'; message.error = event.message; showNotice(event.type === 'done' ? 'Saved.' : event.message); }
-      render(); box.scrollTop = box.scrollHeight;
+      else if (event.type === 'done' || event.type === 'error') { terminal = true; message.text = event.answer || text; message.state = event.state; message.status = event.type === 'done' ? 'ok' : 'error'; message.error = event.message; showNotice(event.type === 'done' ? 'Saved.' : event.message); if (event.type === 'done' && autoRead) readAloud(message); }
+      render();
     };
     try {
       while (!terminal && !ctrl.signal.aborted && retries < 8) {
@@ -384,21 +387,65 @@
   function download(value, name, type = 'application/json') { const blob = new Blob([typeof value === 'string' ? value : JSON.stringify(value, null, 2)], { type }), url = URL.createObjectURL(blob), a = node('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
   function exportConversation(format) { action(async () => { if (!active) throw new Error('Open a conversation first.'); const value = await api('/api/conversations/' + active.id + '/export?format=' + format); if (format === 'markdown') download(value.content, value.filename, 'text/markdown'); else download(value, 'artemis-conversation.json'); }); }
 
-  // Browser read-aloud is separate from the Artemis text model. No audio recording or transcription is implied.
-  const voiceBar = node('div', 'workspace-voice'), voiceSelect = node('select'); voiceSelect.setAttribute('aria-label', 'Read-aloud voice');
+  // Read-aloud goes through ArtemisVoices. Browser speech is the default.
+  // ElevenLabs is used only when a server proxy endpoint is configured. No API key lives here.
+  const voiceBar = node('div', 'workspace-voice'), voiceSelect = node('select'); voiceSelect.setAttribute('aria-label', 'Chat voice');
+  const voiceNote = node('p', 'voice-provider', 'Browser voices');
+  const VOICE_KEY = 'artemis.voice', AUTO_KEY = 'artemis.autoRead';
+  let savedVoice = '', autoRead = false;
+  try { savedVoice = localStorage.getItem(VOICE_KEY) || ''; autoRead = localStorage.getItem(AUTO_KEY) === '1'; } catch {}
   function voiceEvent(kind, message, voice) { if (user && message) api('/api/conversations/' + message.conversation_id + '/voice', { method: 'POST', body: { kind, message_id: message.id, voice: voice || '' } }).catch(() => {}); }
-  function stopSpeech() { if ('speechSynthesis' in window) { if (speechMessage) voiceEvent('stop', speechMessage, voiceSelect.value); speechSynthesis.cancel(); } speech = speechMessage = null; }
+  function markSpeaking(on) {
+    document.body.classList.toggle('is-speaking', !!on);
+    if (!on) document.body.dataset.amp = '0';
+  }
+  function stopSpeech() {
+    if (speechMessage) voiceEvent('stop', speechMessage, voiceSelect.value);
+    if (window.ArtemisVoices) ArtemisVoices.stop();
+    else if ('speechSynthesis' in window) speechSynthesis.cancel();
+    speech = speechMessage = null; markSpeaking(false);
+  }
   function readAloud(message) {
-    stopSpeech(); speechMessage = message; speech = new SpeechSynthesisUtterance(message.text); speech.voice = speechSynthesis.getVoices().find(v => v.name === voiceSelect.value) || null;
-    speech.onend = () => { voiceEvent('end', message, voiceSelect.value); speech = speechMessage = null; };
-    speech.onerror = () => { voiceEvent('error', message, voiceSelect.value); showNotice('Read-aloud is unavailable. Text chat is still available.'); speech = speechMessage = null; };
-    voiceEvent('play', message, voiceSelect.value); speechSynthesis.speak(speech);
+    if (!message?.text || !window.ArtemisVoices) return;
+    const voiceId = voiceSelect.value;
+    ArtemisVoices.speak({
+      text: message.text,
+      voiceId: voiceId,
+      onStart: () => { speechMessage = message; markSpeaking(true); voiceEvent('play', message, voiceId); },
+      onEnd: () => { if (speechMessage === message) { voiceEvent('end', message, voiceId); speechMessage = null; } markSpeaking(false); },
+      onError: () => { voiceEvent('error', message, voiceId); showNotice('Read-aloud is unavailable. Text chat is still available.'); speechMessage = null; markSpeaking(false); }
+    });
   }
-  if ('speechSynthesis' in window) {
-    const voices = () => { const previous = voiceSelect.value; voiceSelect.replaceChildren(node('option', '', 'Default voice')); for (const voice of speechSynthesis.getVoices()) { const option = node('option', '', voice.name + ' · ' + voice.lang); option.value = voice.name; voiceSelect.append(option); } if (previous) voiceSelect.value = previous; };
-    voices(); speechSynthesis.addEventListener('voiceschanged', voices);
-    voiceBar.append(voiceSelect, button('Pause', () => { speechSynthesis.pause(); voiceEvent('pause', speechMessage, voiceSelect.value); }), button('Resume', () => { speechSynthesis.resume(); voiceEvent('resume', speechMessage, voiceSelect.value); }), button('Stop / mute', stopSpeech)); composer.append(voiceBar);
+  function rememberVoice() { savedVoice = voiceSelect.value; try { localStorage.setItem(VOICE_KEY, savedVoice); } catch {} }
+  async function fillVoices() {
+    if (!window.ArtemisVoices) return;
+    const list = await ArtemisVoices.list();
+    const previous = voiceSelect.value || savedVoice;
+    voiceSelect.replaceChildren();
+    if (!list.length) voiceSelect.append(node('option', '', 'Default voice'));
+    for (const voice of list) { const option = node('option', '', voice.label); option.value = voice.id; voiceSelect.append(option); }
+    if (previous && [...voiceSelect.options].some(option => option.value === previous)) voiceSelect.value = previous;
+    voiceNote.textContent = ArtemisVoices.provider === 'elevenlabs' ? 'ElevenLabs voices' : 'Browser voices';
   }
+  voiceSelect.addEventListener('change', rememberVoice);
+  const preview = button('Preview', () => {
+    if (!window.ArtemisVoices) return;
+    ArtemisVoices.speak({
+      text: 'Hi, I am Artemis.',
+      voiceId: voiceSelect.value,
+      onStart: () => markSpeaking(true),
+      onEnd: () => markSpeaking(false),
+      onError: () => { markSpeaking(false); showNotice('Voice preview is unavailable in this browser.'); }
+    });
+  });
+  const auto = node('label', 'voice-auto'), autoInput = node('input');
+  autoInput.type = 'checkbox'; autoInput.checked = autoRead; autoInput.id = 'auto-read';
+  autoInput.addEventListener('change', () => { autoRead = autoInput.checked; try { localStorage.setItem(AUTO_KEY, autoRead ? '1' : '0'); } catch {} });
+  auto.append(autoInput, document.createTextNode(' Read replies aloud'));
+  voiceBar.append(voiceNote, voiceSelect, preview, auto, button('Pause', () => { if (window.ArtemisVoices) ArtemisVoices.pause(); voiceEvent('pause', speechMessage, voiceSelect.value); }), button('Resume', () => { if (window.ArtemisVoices) ArtemisVoices.resume(); voiceEvent('resume', speechMessage, voiceSelect.value); }), button('Stop', stopSpeech));
+  composer.append(voiceBar);
+  fillVoices();
+  if ('speechSynthesis' in window) speechSynthesis.addEventListener('voiceschanged', () => { if (!window.ArtemisVoices || ArtemisVoices.provider !== 'elevenlabs') fillVoices(); });
   document.querySelectorAll('[data-workspace-panel]').forEach(element => element.addEventListener('click', () => selectPanel(element.dataset.workspacePanel)));
   selectPanel('chat');
   const requestedPanel = new URLSearchParams(location.search).get('panel');

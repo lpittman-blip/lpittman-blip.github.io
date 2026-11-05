@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" data-palette="aurora">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Artemis AI — chat with it, code with it, build with it · Cutline Industries</title>
   <meta name="description" content="Artemis is the AI assistant from Cutline Industries in the Bronx, NY. Chat, research and write code with it, with conversations saved to your account. Its own mixture-of-experts model is being trained from scratch.">
-  <meta name="theme-color" content="#05070F">
+  <meta name="theme-color" content="#07080D">
   <meta property="og:title" content="Artemis AI by Cutline Industries">
   <meta property="og:description" content="Chat with it. Code with it. Build with it. Open Artemis Chat at artemisai-bycutlineindustries.studio/chat.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://artemisai-bycutlineindustries.studio/">
   <link rel="canonical" href="https://artemisai-bycutlineindustries.studio/">
-  <script>try{var p=localStorage.getItem('artemis-palette');if(p)document.documentElement.setAttribute('data-palette',p);if(localStorage.getItem('artemis-motion')==='paused')document.documentElement.setAttribute('data-motion','paused')}catch(e){}</script>
+  <script>try{if(localStorage.getItem('artemis-motion')==='paused')document.documentElement.setAttribute('data-motion','paused')}catch(e){}</script>
   <link rel="preconnect" href="https://api.artemisai-bycutlineindustries.studio">
   <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css" media="print" onload="this.media='all'">
@@ -19,53 +19,29 @@
   <link rel="icon" href="artemis-icon.svg">
   <link rel="apple-touch-icon" href="artemis-icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="aurora-core.css">
-  <link rel="stylesheet" href="aurora.css">
-  <link rel="stylesheet" href="home-bg.css">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="home.css">
   <script src="analytics.js" defer></script>
+  <script src="fx.js" defer></script>
   <script src="aurora.js" defer></script>
-  <style>
-    .models { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
-    .model-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem; }
-    .model-card h3 { margin: 0 0 0.4rem; font-size: 1.15rem; }
-    .model-card .tag { display: inline-block; font-size: 0.75rem; opacity: 0.7; margin-bottom: 0.5rem; }
-    .model-card p { margin: 0; color: var(--muted, #aaa); font-size: 0.95rem; }
-
-    /* Refined hero */
-    .hero { text-align: center; padding: 5.5rem 1rem 4rem; position: relative; }
-    .hero .wrap { max-width: 820px; margin: 0 auto; }
-    #hero-title {
-      font-size: clamp(2.8rem, 7vw, 4.6rem);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      font-weight: 650;
-      margin: 0.6rem 0 1rem;
-    }
-    .hero .lede { font-size: 1.15rem; max-width: 560px; margin: 0 auto 1.75rem; opacity: 0.85; }
-    .hero .ctas { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-    .hero .status-chip { margin-bottom: 1rem; }
-  </style>
 </head>
-<body class="home-bg">
-<div class="bg-animate" aria-hidden="true"></div>
+<body>
 <a class="skip" href="#content">Skip to content</a>
+<canvas class="field" data-field aria-hidden="true"></canvas>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <linearGradient id="arc-grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--s1)"/><stop offset=".5" stop-color="var(--s3)"/><stop offset="1" stop-color="var(--s4)"/></linearGradient>
-    <symbol id="mark" viewBox="0 0 32 32"><path d="M5 22c3.2-12 18.8-12 22 0" fill="none" stroke="url(#arc-grad)" stroke-width="3" stroke-linecap="round"/></symbol>
+    <linearGradient id="mark-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7C9CFF"/><stop offset=".55" stop-color="#19D3C5"/><stop offset="1" stop-color="#FF4FD8"/></linearGradient>
+    <symbol id="mark" viewBox="0 0 32 32"><path d="M5 23c3.4-13 18.6-13 22 0" fill="none" stroke="url(#mark-grad)" stroke-width="3" stroke-linecap="round"/></symbol>
   </defs>
 </svg>
-
-<div class="sky" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="stars"></i><i class="stars2"></i></div>
-
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="Artemis AI home" data-track="nav_home"><svg aria-hidden="true"><use href="#mark"/></svg>Artemis AI</a>
+    <a class="brand" href="/" aria-label="Artemis AI home" data-track="nav_home"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>Artemis AI</a>
     <nav class="menu" aria-label="Primary">
       <a href="#what" data-track="nav_platform">Platform</a>
       <a href="/products/" data-track="nav_products">Products</a>
       <a href="/chat/" data-track="nav_chat">Chat</a>
-      <a href="#how" data-track="nav_status">Status</a>
+      <a href="#status" data-track="nav_status">Status</a>
     </nav>
     <div class="actions">
       <a class="signin tlink" href="/account/" data-track="nav_sign_in">Sign in</a>
@@ -77,57 +53,45 @@
     <a href="#what" data-track="mnav_platform">Platform</a>
     <a href="/products/" data-track="mnav_products">Products</a>
     <a href="/chat/" data-track="mnav_chat">Chat</a>
-    <a href="#how" data-track="mnav_status">Status</a>
+    <a href="#status" data-track="mnav_status">Status</a>
     <a href="/account/?mode=signup" data-track="mnav_sign_in">Sign in / Create account</a>
     <a class="btn primary" href="/chat/" data-track="mnav_launch">Launch Artemis</a>
   </nav>
 </header>
-
 <main id="content">
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap">
-      <a class="status-chip" href="#how" data-track="hero_status"><span class="dot" id="hero-dot"></span><span id="hero-state">Checking Artemis Chat…</span></a>
-      <h1 id="hero-title">Chat with it. Code with it. <span class="grad-text">Build with it.</span></h1>
+      <div class="hero-orb"><canvas data-orb width="320" height="320" aria-hidden="true"></canvas></div>
+      <a class="status-chip" href="#status" data-track="hero_status"><span class="dot" id="hero-dot"></span><span id="hero-state">Checking Artemis Chat…</span></a>
+      <h1 id="hero-title"><span class="verb" id="verb">Chat</span><span class="caret" aria-hidden="true"></span> with it.</h1>
       <p class="lede">Artemis is the AI assistant made by Cutline Industries. Ask questions, research with the web, and write, fix and explain code — in private conversations saved to your account.</p>
       <div class="ctas">
         <a class="btn primary" href="/chat/" data-track="hero_launch">Launch Artemis</a>
-        <a class="btn secondary" href="/account/?mode=signup" data-track="hero_create_account">Create an account</a>
+        <a class="btn" href="/account/?mode=signup" data-track="hero_create_account">Create an account</a>
       </div>
       <p class="note">Account required to chat · email and password</p>
     </div>
   </section>
 
-  <section class="band" id="family" aria-labelledby="family-title">
+  <section class="chapter" id="family" aria-labelledby="family-title">
     <div class="wrap">
-      <span class="eyebrow g">Model Family</span>
-      <h2 id="family-title">Artemis models</h2>
-      <p class="intro">Three models. One assistant. Built by Cutline Industries.</p>
+      <span class="eyebrow rv">Model family</span>
+      <h2 class="rv" id="family-title">Artemis models</h2>
+      <p class="intro rv">Three models. One assistant. Built by Cutline Industries.</p>
       <div class="models">
-        <article class="model-card">
-          <div class="tag">From-scratch flagship</div>
-          <h3>Artemis Prime</h3>
-          <p>Custom mixture-of-experts architecture trained from random initialization. Coming soon.</p>
-        </article>
-        <article class="model-card">
-          <div class="tag">14B main model</div>
-          <h3>Artemis Apex</h3>
-          <p>Self-improving fine-tune of Qwen2.5-14B. Balanced for reasoning and everyday use.</p>
-        </article>
-        <article class="model-card">
-          <div class="tag">7B fast model</div>
-          <h3>Artemis Swift</h3>
-          <p>Self-improving fine-tune of Qwen2.5-7B. Optimized for speed and high volume.</p>
-        </article>
+        <article class="model-card rv"><div class="tag">From-scratch flagship</div><h3>Artemis Prime</h3><p>Custom mixture-of-experts architecture trained from random initialization. Coming soon.</p></article>
+        <article class="model-card rv"><div class="tag">14B main model</div><h3>Artemis Apex</h3><p>Self-improving fine-tune of Qwen2.5-14B. Balanced for reasoning and everyday use.</p></article>
+        <article class="model-card rv"><div class="tag">7B fast model</div><h3>Artemis Swift</h3><p>Self-improving fine-tune of Qwen2.5-7B. Optimized for speed and high volume.</p></article>
       </div>
     </div>
   </section>
 
-  <section class="band" id="what" aria-labelledby="what-title">
-    <div class="wrap what">
-      <div class="rv">
-        <span class="eyebrow g">What Artemis is</span>
-        <h2 id="what-title">An assistant you talk to — and a model built from scratch.</h2>
-        <p class="intro">Today, Artemis is a chat assistant at <a class="tlink" href="/chat/" data-track="what_chat">/chat</a> with saved conversations, web tools and a code workspace. Underneath, Cutline Industries is training Artemis's own mixture-of-experts model from random initialization — not a fine-tune, not a wrapper. Until that model is ready, Chat is answered by a bootstrap model, and the app says so.</p>
+  <section class="chapter" id="what" aria-labelledby="what-title">
+    <div class="wrap split">
+      <div class="chapter-copy">
+        <span class="eyebrow rv">What Artemis is</span>
+        <h2 class="rv" id="what-title">An assistant you talk to — and a model built from scratch.</h2>
+        <p class="rv">Today, Artemis is a chat assistant at <a class="tlink" href="/chat/" data-track="what_chat">/chat</a> with saved conversations, web tools and a code workspace. Underneath, Cutline Industries is training Artemis's own mixture-of-experts model from random initialization — not a fine-tune, not a wrapper. Until that model is ready, Chat is answered by a bootstrap model, and the app says so.</p>
       </div>
       <dl class="facts">
         <div class="rv"><dt>Where</dt><dd>In your browser at /chat, on desktop and mobile</dd></div>
@@ -138,77 +102,93 @@
     </div>
   </section>
 
-  <section class="band" id="features" aria-label="Chat, code and build with Artemis" style="padding-top:0">
-    <div class="wrap">
-      <article class="feature" id="chat-with-it">
-        <div class="feature-copy rv">
-          <span class="num grad-text">01</span>
-          <h3>Chat with it</h3>
-          <p>Ask, follow up and change direction. Replies stream in as they are written.</p>
-          <ul>
-            <li>Private, saved conversations you can pick up on another device</li>
-            <li>Web search (currently via Wikipedia) and reading a public web page</li>
-            <li>Search your history; export a chat as Markdown or JSON</li>
-            <li>Have replies read aloud with your browser's built-in speech</li>
-          </ul>
-          <a class="more tlink" href="/chat/" data-track="feature_chat">Open Chat →</a>
+  <section class="chapter" id="chat-with-it">
+    <div class="wrap split">
+      <div class="chapter-copy rv">
+        <span class="eyebrow">01 · Chat</span>
+        <h2>Chat with it</h2>
+        <p>Ask, follow up and change direction. Replies stream in as they are written.</p>
+        <ul>
+          <li>Private, saved conversations you can pick up on another device</li>
+          <li>Web search (currently via Wikipedia) and reading a public web page</li>
+          <li>Search your history; export a chat as Markdown or JSON</li>
+          <li>Have replies read aloud with your browser's built-in speech</li>
+        </ul>
+        <a class="btn primary" href="/chat/" data-track="feature_chat">Open Chat</a>
+      </div>
+      <div class="win rv" aria-hidden="true">
+        <div class="win-bar"><i></i><i></i><i></i><span>artemis / chat · example</span></div>
+        <div class="win-body">
+          <div class="bub u">Explain what this regex does: <code>^\d{3}-\d{4}$</code></div>
+          <div class="bub a">It matches a whole string made of three digits, a hyphen, then four digits — like <code>555-0123</code></div>
+          <div class="composer-fake">Message Artemis<b>↑</b></div>
         </div>
-        <div class="card rv" aria-hidden="true">
-          <div class="card-top">artemis / chat<span class="tag">Example</span></div>
-          <div class="card-body">
-            <div class="bub u">Explain what this regex does: <code>^\d{3}-\d{4}$</code></div>
-            <div class="bub a">It matches a whole string made of three digits, a hyphen, then four digits — like <code>555-0123</code><span class="caret"></span></div>
-            <div class="composer">Message Artemis<i>↑</i></div>
-          </div>
-        </div>
-      </article>
+      </div>
+    </div>
+  </section>
 
-      <article class="feature" id="code-with-it">
-        <div class="feature-copy rv">
-          <span class="num grad-text">02</span>
-          <h3>Code with it</h3>
-          <p>Have Artemis write, explain, debug and review code. The Workspace panel keeps the conversation, the code and the tool activity side by side, so the work behind an answer stays with it.</p>
-          <ul>
-            <li>Switch between Chat and Code in the same conversation</li>
-            <li>Edit a message and take the answer in a new direction</li>
-          </ul>
-          <a class="more tlink" href="/chat/?panel=code" data-track="feature_workspace">Explore Workspace →</a>
-        </div>
-        <div class="card rv" aria-hidden="true">
-          <div class="card-top">workspace · code<span class="tag">Example</span></div>
+  <section class="chapter" id="code-with-it">
+    <div class="wrap split">
+      <div class="chapter-copy rv">
+        <span class="eyebrow">02 · Workspace</span>
+        <h2>Code with it</h2>
+        <p>Have Artemis write, explain, debug and review code. The Workspace panel keeps the conversation, the code and the tool activity side by side, so the work behind an answer stays with it.</p>
+        <ul>
+          <li>Switch between Chat and Code in the same conversation</li>
+          <li>Edit a message and take the answer in a new direction</li>
+        </ul>
+        <a class="btn" href="/chat/?panel=code" data-track="feature_workspace">Explore Workspace</a>
+      </div>
+      <div class="win rv" aria-hidden="true">
+        <div class="win-bar"><i></i><i></i><i></i><span>workspace · code · example</span></div>
 <pre class="term"><span class="c"># you: make this function handle an empty list</span>
 <span class="k">def</span> average(xs):
     <span class="k">if not</span> xs:
         <span class="k">return</span> 0.0
     <span class="k">return</span> sum(xs) / len(xs)</pre>
-        </div>
-      </article>
+      </div>
+    </div>
+  </section>
 
-      <article class="feature" id="build-with-it">
-        <div class="feature-copy rv">
-          <span class="num grad-text">03</span>
-          <h3>Build with it</h3>
-          <p>For developers, Artemis also comes as a terminal coding agent and an API. Both are available by request.</p>
-          <ul>
-            <li><b>Artemis CLI</b> — finds context in a repository with <code>glob</code>, <code>grep</code> and ranged file reads; no vector database. <code>artemis serve</code> runs a local API with OpenAPI docs.</li>
-            <li><b>Artemis API</b> — streaming chat, an OpenAI-compatible chat completions endpoint and per-account memory, with server-side API keys.</li>
-          </ul>
-          <a class="more tlink" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20developer%20access" data-track="feature_dev_access">Ask about developer access →</a>
-        </div>
-        <div class="card rv" aria-hidden="true">
-          <div class="card-top">artemis-cli<span class="tag">By request</span></div>
+  <section class="chapter" id="build-with-it">
+    <div class="wrap split">
+      <div class="chapter-copy rv">
+        <span class="eyebrow">03 · CLI</span>
+        <h2>Build with it</h2>
+        <p><b>Artemis CLI</b> finds context in a repository with <code>glob</code>, <code>grep</code> and ranged file reads; no vector database. <code>artemis serve</code> runs a local API with OpenAPI docs. Available by request.</p>
+        <a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20developer%20access" data-track="feature_dev_access">Ask about developer access</a>
+      </div>
+      <div class="win rv" aria-hidden="true">
+        <div class="win-bar"><i></i><i></i><i></i><span>artemis-cli · by request</span></div>
 <pre class="term"><span class="p">$ </span>artemis serve
 <span class="c"># local server on :7777, docs at /docs</span>
 <span class="p">$ </span>artemis login --key art_…
 <span class="c"># defaults to api.artemisai-bycutlineindustries.studio</span></pre>
-        </div>
-      </article>
+      </div>
     </div>
   </section>
 
-  <section class="band" id="how" aria-labelledby="how-title" style="padding-top:0">
+  <section class="chapter" id="api">
+    <div class="wrap split">
+      <div class="chapter-copy rv">
+        <span class="eyebrow">04 · API</span>
+        <h2>Artemis API</h2>
+        <p>Streaming chat, an OpenAI-compatible chat completions endpoint and per-account memory, with server-side API keys. Access is by request.</p>
+        <a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20API%20access" data-track="feature_api">Ask about API access</a>
+      </div>
+      <div class="win rv" aria-hidden="true">
+        <div class="win-bar"><i></i><i></i><i></i><span>api · by request</span></div>
+<pre class="term"><span class="c"># streaming chat</span>
+<span class="c"># OpenAI-compatible chat completions</span>
+<span class="c"># per-account memory · server-side API keys</span>
+<span class="p"># </span>api.artemisai-bycutlineindustries.studio</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="how" aria-labelledby="how-title">
     <div class="wrap">
-      <span class="eyebrow g rv">How it works</span>
+      <span class="eyebrow rv">How it works</span>
       <h2 class="rv" id="how-title">One orchestrator, ten specialists — and a status you can check.</h2>
       <div class="how">
         <div>
@@ -223,9 +203,9 @@
           </ul>
           <p class="src rv">This is the design of Artemis's own model, which is still in training. Chat currently runs on the bootstrap model shown in the status card.</p>
         </div>
-        <article class="card rv" aria-labelledby="live-title">
-          <div class="card-top"><span class="dot" id="live-dot" aria-hidden="true"></span><span id="live-title">Live · read from the gateway</span></div>
-          <div class="card-body" aria-live="polite">
+        <article class="win rv" id="status" aria-labelledby="live-title">
+          <div class="win-bar"><span class="dot" id="live-dot"></span><span id="live-title">Live · read from the gateway</span></div>
+          <div class="win-body" aria-live="polite">
             <ul class="kv">
               <li>Chat<b id="st-chat">Checking…</b></li>
               <li>Answering model<b id="st-model">Checking…</b></li>
@@ -244,66 +224,45 @@
     </div>
   </section>
 
-  <section class="band" id="about" aria-labelledby="about-title" style="padding-top:0">
+  <section class="chapter" id="about" aria-labelledby="about-title">
     <div class="wrap">
-      <span class="eyebrow g rv">About</span>
+      <span class="eyebrow rv">About</span>
       <h2 class="rv" id="about-title">Made by Cutline Industries in the Bronx, New York.</h2>
       <div class="about">
-        <article class="card rv"><div class="card-body">
-          <p>Artemis AI is a product of Cutline Industries. The company builds and hosts Artemis and is training its model in-house.</p>
-          <p>Artemis was designed around one rule: its own model never sends your request to someone else's AI model. That is meant for teams that can't send their code to a third-party model provider.</p>
-        </div></article>
-        <article class="card rv"><div class="card-body">
-          <address>
-            Cutline Industries<br>
-            Bronx, NY 10467, United States<br>
-            <a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio" data-track="about_email">support@artemisai-bycutlineindustries.studio</a><br>
-            <a class="tlink" href="https://cutline-industries.studio" rel="noopener" data-track="about_company_site">cutline-industries.studio</a>
-          </address>
-        </div></article>
+        <article class="rv"><p>Artemis AI is a product of Cutline Industries. The company builds and hosts Artemis and is training its model in-house.</p><p>Artemis was designed around one rule: its own model never sends your request to someone else's AI model. That is meant for teams that can't send their code to a third-party model provider.</p></article>
+        <article class="rv"><address>Cutline Industries<br>Bronx, NY 10467, United States<br><a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio" data-track="about_email">support@artemisai-bycutlineindustries.studio</a><br><a class="tlink" href="https://cutline-industries.studio" rel="noopener" data-track="about_company_site">cutline-industries.studio</a></address></article>
       </div>
     </div>
   </section>
 
-  <section class="band" aria-labelledby="cta-title" style="padding-top:0">
+  <section class="chapter" aria-labelledby="cta-title">
     <div class="wrap">
       <div class="finale rv">
         <h2 id="cta-title">Launch Artemis.</h2>
         <p>Create an account, open Chat and ask your first question.</p>
         <div class="ctas">
           <a class="btn primary" href="/chat/" data-track="cta_launch">Open Artemis Chat</a>
-          <a class="btn secondary" href="/products/" data-track="cta_products">See products</a>
+          <a class="btn" href="/products/" data-track="cta_products">See products</a>
         </div>
       </div>
     </div>
   </section>
 </main>
-
 <footer class="foot">
   <div class="wrap">
     <div class="row">
       <div>
-        <a class="brand" href="/" data-track="footer_home"><svg aria-hidden="true"><use href="#mark"/></svg>Artemis AI</a>
+        <a class="brand" href="/" data-track="footer_home"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>Artemis AI</a>
         <p class="about-line">Artemis AI is a product of Cutline Industries.</p>
       </div>
       <nav aria-label="Footer">
         <a class="tlink" href="/chat/" data-track="footer_chat">Chat</a>
         <a class="tlink" href="/products/" data-track="footer_products">Products</a>
         <a class="tlink" href="/account/" data-track="footer_sign_in">Sign in</a>
-        <a class="tlink" href="#how" data-track="footer_status">Status</a>
+        <a class="tlink" href="#status" data-track="footer_status">Status</a>
         <a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio" data-track="footer_support">Support</a>
       </nav>
-      <div class="controls">
-        <span class="lbl" id="pal-lbl">Palette</span>
-        <div class="swatches" role="group" aria-labelledby="pal-lbl">
-          <button class="swatch auto" type="button" data-pick="auto" aria-label="Cycle palettes automatically" data-track="palette_auto"></button>
-          <button class="swatch" type="button" data-pick="aurora" aria-label="Aurora palette" data-track="palette_aurora"></button>
-          <button class="swatch" type="button" data-pick="nebula" aria-label="Nebula palette" data-track="palette_nebula"></button>
-          <button class="swatch" type="button" data-pick="sunset" aria-label="Sunset palette" data-track="palette_sunset"></button>
-          <button class="swatch" type="button" data-pick="dusk" aria-label="Dusk palette" data-track="palette_dusk"></button>
-        </div>
-        <button class="pause" type="button" data-motion-toggle aria-pressed="false" data-track="motion_toggle"><span class="i" aria-hidden="true">❚❚</span><span class="l">Pause motion</span></button>
-      </div>
+      <button class="pause" type="button" data-motion-toggle aria-pressed="false" data-track="motion_toggle"><span class="i" aria-hidden="true">❚❚</span><span class="l">Pause motion</span></button>
     </div>
     <p class="legal">© 2026 Cutline Industries · Bronx, NY · Hosted by Cutline Industries.</p>
   </div>

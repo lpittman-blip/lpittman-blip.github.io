@@ -7,14 +7,17 @@ repo at https://artemisai-bycutlineindustries.studio (see `CNAME`). Merging to
 The chat workspace, sign-in/sign-up and account features call the Artemis
 gateway at `api.artemisai-bycutlineindustries.studio` with credentialed CORS.
 
-## Look: "Aurora" (Figma redesign v1, file rEnLGj5NHTFy6BjQNBzcAm)
+## Look
+
+One dark token set (`tokens.css`): ink `#07080D`, electric blue `#7C9CFF`, teal `#19D3C5`, magenta and lime as glow accents. One arc logo. No palette switcher.
 
 | File | Role |
 |---|---|
-| `aurora-core.css` | Tokens, the four live palettes (Aurora, Nebula, Sunset, Dusk), aurora sky + starfield, gradient primitives, Pause-motion and reduced-motion rules |
-| `aurora.css` | Homepage layout |
-| `aurora-shell.css` | Restyle of the app pages (chat, products, account). Visual only |
-| `aurora.js` | Palette cycle (12 s hold + 4 s crossfade, paused when the tab is hidden), footer palette picker, Pause motion, card pointer glow, section reveal, live status |
+| `tokens.css` | Shared tokens, type, buttons, focus, reduced motion |
+| `home.css` | Homepage chapters |
+| `app.css` | Chat, account, and products |
+| `fx.js` | One canvas: aurora field, living orb, typed headline. Pauses off-screen, in background tabs, and under reduced motion |
+| `voices.js` | Read-aloud. Browser `speechSynthesis` by default. ElevenLabs only through a configured server proxy (see `docs/tts-proxy.md`) |
+| `aurora.js` | Mobile menu, pause-motion, scroll reveals, live status |
 
-`liftoff.css` / `liftoff.js` are the previous homepage and are no longer loaded.
 `/sign-in/`, `/sign-up/`, `/signin/`, `/signup/` and `/login/` redirect to `/account/`.
