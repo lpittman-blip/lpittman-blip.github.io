@@ -1,35 +1,33 @@
 <!doctype html>
-<html lang="en" data-palette="aurora">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Chat · Artemis AI</title>
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="icon" href="../artemis-icon.svg">
 <link rel="apple-touch-icon" href="../artemis-icon-192.png">
-<meta name="theme-color" content="#0e0e10">
-<meta name="description" content="Artemis AI chat, products, and account sign-in.">
+<meta name="theme-color" content="#07080D">
+<meta name="description" content="Chat with Artemis. Conversations are saved to your account.">
+<link rel="canonical" href="https://artemisai-bycutlineindustries.studio/chat/">
 <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="/fonts.css"></noscript>
-<link rel="stylesheet" href="../artemis-theme.css">
-<link rel="stylesheet" href="../mobile.css">
-<link rel="stylesheet" href="../workspace.css">
-<link rel="stylesheet" href="../aurora-core.css">
-<link rel="stylesheet" href="../aurora-shell.css">
-<link rel="stylesheet" href="../experience.css">
-<script>try{var p=localStorage.getItem('artemis-palette');if(p)document.documentElement.setAttribute('data-palette',p);if(localStorage.getItem('artemis-motion')==='paused')document.documentElement.setAttribute('data-motion','paused')}catch(e){}</script>
-<script src="../analytics.js" defer></script>
-<script src="../aurora.js" defer></script>
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/app.css">
+<script>try{if(localStorage.getItem('artemis-motion')==='paused')document.documentElement.setAttribute('data-motion','paused')}catch(e){}</script>
+<script src="/analytics.js" defer></script>
+<script src="/fx.js" defer></script>
+<script src="/voices.js" defer></script>
+<script src="/aurora.js" defer></script>
 </head>
 <body data-start="chat" class="is-chat-experience experience-empty">
-<div class="sky" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="stars"></i><i class="stars2"></i></div>
+<a class="skip-chat" href="#prompt">Skip to message</a>
+<canvas class="field" data-field aria-hidden="true"></canvas>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="mark-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7C9CFF"/><stop offset=".55" stop-color="#19D3C5"/><stop offset="1" stop-color="#FF4FD8"/></linearGradient><symbol id="mark" viewBox="0 0 32 32"><path d="M5 23c3.4-13 18.6-13 22 0" fill="none" stroke="url(#mark-grad)" stroke-width="3" stroke-linecap="round"/></symbol></defs></svg>
 <header class="nav">
 <div class="wrap">
-<a class="brand" href="../">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 20 12 3l8 17"/><path d="M7.5 13h9"/><circle cx="12" cy="3" r="1.1" fill="currentColor"/></svg>
-Artemis AI
-</a>
+<a class="brand" href="../"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>Artemis AI</a>
 <nav class="nav-links" id="navLinks" aria-label="Main">
 <a href="../">Home</a>
 <button type="button" data-go="chat">Chat</button>
@@ -40,9 +38,9 @@ Artemis AI
 <button class="btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
 </div>
 </header>
-<a class="skip-chat" href="#prompt">Skip to message</a>
-<main>
-<section class="view" id="view-chat" data-view="chat" >
+<main id="content">
+<section class="view" id="view-chat" data-view="chat">
+<h1 class="sr-only">Artemis Chat</h1>
 <div class="wrap">
 <div class="chat">
 <aside aria-label="Conversations">
@@ -52,8 +50,8 @@ Artemis AI
 <div class="msgs" id="msgs"></div>
 <div class="composer">
 <form id="composer">
-<label for="prompt" class="eyebrow" style="position:absolute;left:-9999px">Message Artemis</label>
-<textarea id="prompt" rows="1" placeholder="Message Artemis"></textarea>
+<label for="prompt" class="sr-only">Message Artemis</label>
+<textarea id="prompt" rows="1" placeholder="Message Artemis" enterkeyhint="send"></textarea>
 <button class="send" type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 </form>
 <p class="hint">Sign in to save your conversations. Check important answers.</p>
@@ -63,16 +61,29 @@ Artemis AI
 </div>
 </section>
 <section class="view" id="view-products" data-view="products" hidden>
-<div class="wrap"><div class="page-head"><span class="eyebrow">Products</span><h1>Everything Artemis.<br>In one place.</h1><p>Artemis Chat and the Workspace are live today for anyone with an account. The CLI and the API are for developers, with access by request.</p></div>
-<div class="product-grid">
-<article class="product-card"><span class="eyebrow">Live · Conversations</span><h2>Artemis Chat</h2><p>Private conversations with streaming replies, web search, history search, message edits, and Markdown or JSON export. Conversations are saved to your account.</p><p class="product-status">Account required. Chat is currently answered by a labelled bootstrap model while Artemis's own model is trained.</p><a class="btn btn-primary" href="../chat/" data-track="products_open_chat">Open Chat</a></article>
-<article class="product-card"><span class="eyebrow">Live · Included in Chat</span><h2>Artemis Workspace</h2><p>Switch between your conversation, code, and tool activity, so the work behind an answer stays right next to it.</p><p class="product-status">Tools depend on your plan and the model configuration.</p><a class="btn" href="../chat/?panel=code" data-track="products_workspace">Explore Workspace</a></article>
-<article class="product-card"><span class="eyebrow">Developers · By request</span><h2>Artemis CLI</h2><p>A terminal coding agent. It finds context in your repository with glob, grep and ranged file reads instead of a vector database, and <code>artemis serve</code> runs a local API server with OpenAPI docs.</p><p class="product-status">Available to developers by request.</p><a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20CLI%20access" data-track="products_cli_request">Ask about the CLI</a></article>
-<article class="product-card"><span class="eyebrow">Developers · By request</span><h2>Artemis API</h2><p>Integrate Artemis into your own application with server-side API keys. Streaming chat, an OpenAI-compatible chat completions endpoint, and per-account memory.</p><p class="product-status">Access is provisioned on request.</p><a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20API%20access" data-track="products_api_request">Ask about API access</a></article>
-</div></div>
+<div class="wrap chapters">
+<header class="page-head"><span class="eyebrow">Products</span><h1>Everything Artemis. In one place.</h1><p>Artemis Chat and the Workspace are live today for anyone with an account. The CLI and the API are for developers, with access by request.</p></header>
+<article class="chapter"><div><span class="eyebrow">Live · Conversations</span><h2>Artemis Chat</h2><p>Private conversations with streaming replies, web search, history search, message edits, and Markdown or JSON export. Conversations are saved to your account.</p><p class="product-status">Account required. Chat is currently answered by a labelled bootstrap model while Artemis's own model is trained.</p><a class="btn btn-primary" href="../chat/" data-track="products_open_chat">Open Chat</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>artemis / chat · example</span></div><div class="win-body"><div class="bub u">Explain what this regex does: <code>^\d{3}-\d{4}$</code></div><div class="bub a">It matches a whole string made of three digits, a hyphen, then four digits — like 555-0123.</div></div></div></article>
+<article class="chapter"><div><span class="eyebrow">Live · Included in Chat</span><h2>Artemis Workspace</h2><p>Switch between your conversation, code, and tool activity, so the work behind an answer stays right next to it.</p><p class="product-status">Tools depend on your plan and the model configuration.</p><a class="btn" href="../chat/?panel=code" data-track="products_workspace">Explore Workspace</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>workspace · code · example</span></div><pre class="term"><span class="c"># you: make this function handle an empty list</span>
+def average(xs):
+    if not xs:
+        return 0.0
+    return sum(xs) / len(xs)</pre></div></article>
+<article class="chapter"><div><span class="eyebrow">Developers · By request</span><h2>Artemis CLI</h2><p>A terminal coding agent. It finds context in your repository with glob, grep and ranged file reads instead of a vector database, and <code>artemis serve</code> runs a local API server with OpenAPI docs.</p><p class="product-status">Available to developers by request.</p><a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20CLI%20access" data-track="products_cli_request">Ask about the CLI</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>artemis-cli · by request</span></div><pre class="term">$ artemis serve
+# local server on :7777, docs at /docs
+$ artemis login --key art_…
+# defaults to api.artemisai-bycutlineindustries.studio</pre></div></article>
+<article class="chapter"><div><span class="eyebrow">Developers · By request</span><h2>Artemis API</h2><p>Integrate Artemis into your own application with server-side API keys. Streaming chat, an OpenAI-compatible chat completions endpoint, and per-account memory.</p><p class="product-status">Access is provisioned on request.</p><a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20API%20access" data-track="products_api_request">Ask about API access</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>api · by request</span></div><pre class="term"># streaming chat
+# OpenAI-compatible chat completions
+# per-account memory · server-side API keys</pre></div></article>
+</div>
 </section>
 <section class="view" id="view-account" data-view="account" hidden>
-<div class="wrap"><div class="page-head"><span class="eyebrow">Your account</span><h1>Your space with Artemis.</h1><p>Create an account or sign in to keep your Artemis conversations private and pick them up on any device. You can export your data or delete your chats from your account settings at any time.</p></div><div id="account-page-content"></div></div>
+<div class="wrap">
+<div class="page-head"><canvas class="orb orb-account" data-orb width="200" height="200" aria-hidden="true"></canvas><span class="eyebrow">Your account</span><h1>Your space with Artemis.</h1><p>Create an account or sign in to keep your Artemis conversations private and pick them up on any device. You can export your data or delete your chats from your account settings at any time.</p></div>
+<div id="account-page-content"></div>
+<p class="privacy-note">Conversations are private to your account. Export or delete them any time.</p>
+</div>
 </section>
 </main>
 <footer class="shell-foot"><div class="wrap"><p>© 2026 Cutline Industries · Bronx, NY · <a href="../">Artemis AI home</a> · <a href="mailto:support@artemisai-bycutlineindustries.studio">Support</a></p></div></footer>
@@ -81,8 +92,7 @@ Artemis AI
 <script src="../chat-stream.js" defer></script>
 <script src="../chat-render.js" defer></script>
 <script src="../workspace.js" defer></script>
-
-<button type="button" id="experience-motion" data-motion-toggle aria-pressed="false"><span class="i" aria-hidden="true">Ⅱ</span><span class="l">Pause motion</span></button>
+<button type="button" id="experience-motion" data-motion-toggle aria-pressed="false"><span class="i" aria-hidden="true">❚❚</span><span class="l">Pause motion</span></button>
 <script src="../experience.js" defer></script>
 </body>
 </html>
