@@ -96,6 +96,7 @@
   function mountOrb(canvas) {
     if (!canvas || canvas._fx) return;
     canvas._fx = 'orb';
+    canvas.style.background = 'transparent';
     var ctx = canvas.getContext('2d', { alpha: true });
     var visible = true;
     if ('IntersectionObserver' in window) {
@@ -113,25 +114,35 @@
   function paintOrb(ctx, canvas, t, still) {
     var s = resize(canvas), w = s.w, h = s.h;
     var cx = w / 2, cy = h / 2;
-    var base = Math.min(w, h) * 0.28;
+    /* Keep every pixel of glow inside the bitmap so the canvas edge stays clear. */
+    var reach = Math.min(w, h) * 0.5 - Math.max(2, s.dpr);
+    var base = reach * 0.36;
     var state = canvas.getAttribute('data-state') || (canvas.getAttribute('data-orb') === 'agent' ? agent : 'idle');
     var energy = still ? 0.2 : (state === 'speak' || state === 'listen' ? amp : state === 'think' ? 0.55 : 0.18);
     var speed = state === 'think' ? 2.4 : state === 'speak' ? 1.8 : state === 'listen' ? 1.5 : 0.7;
     ctx.clearRect(0, 0, w, h);
-    var bloom = ctx.createRadialGradient(cx, cy, base * 0.2, cx, cy, base * 2.4);
-    bloom.addColorStop(0, 'rgba(124,156,255,.50)');
-    bloom.addColorStop(0.35, state === 'listen' ? 'rgba(200,255,74,.22)' : 'rgba(25,211,197,.20)');
-    bloom.addColorStop(0.7, 'rgba(255,79,216,.16)');
-    bloom.addColorStop(1, 'rgba(7,8,13,0)');
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = 'transparent';
+    var bloom = ctx.createRadialGradient(cx, cy, base * 0.15, cx, cy, reach);
+    bloom.addColorStop(0, 'rgba(124,156,255,0.42)');
+    bloom.addColorStop(0.22, state === 'listen' ? 'rgba(200,255,74,0.16)' : 'rgba(25,211,197,0.14)');
+    bloom.addColorStop(0.48, 'rgba(255,79,216,0.07)');
+    bloom.addColorStop(0.78, 'rgba(124,156,255,0.025)');
+    bloom.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = bloom;
-    ctx.fillRect(0, 0, w, h);
+    ctx.beginPath();
+    ctx.arc(cx, cy, reach, 0, Math.PI * 2);
+    ctx.fill();
     var rings = state === 'idle' ? 2 : 3;
+    var ringLimit = reach * 0.86;
     for (var i = 0; i < rings; i++) {
       var p = still ? (i + 1) / (rings + 1) : ((t / 1000) * speed * 0.35 + i / rings) % 1;
+      var ringR = Math.min(ringLimit, base * (1.25 + p * 0.95));
+      var fade = 1 - ringR / ringLimit;
       ctx.beginPath();
-      ctx.arc(cx, cy, base * (1.15 + p * 1.45), 0, Math.PI * 2);
-      ctx.strokeStyle = i % 2 ? 'rgba(255,79,216,' + ((1 - p) * 0.55) + ')' : 'rgba(25,211,197,' + ((1 - p) * 0.6) + ')';
-      ctx.lineWidth = Math.max(1.5, 2.2 * s.dpr * (1 - p));
+      ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
+      ctx.strokeStyle = i % 2 ? 'rgba(255,79,216,' + ((1 - p) * 0.35 * (0.35 + fade)) + ')' : 'rgba(25,211,197,' + ((1 - p) * 0.4 * (0.35 + fade)) + ')';
+      ctx.lineWidth = Math.max(1, 1.6 * s.dpr * (1 - p));
       ctx.stroke();
     }
     ctx.save();
@@ -149,22 +160,28 @@
       var pulse = 1 + (still ? 0 : Math.sin(t / 700) * 0.035) + energy * 0.08;
       ctx.arc(0, 0, base * pulse, 0, Math.PI * 2);
     }
-    var core = ctx.createRadialGradient(-base * 0.32, -base * 0.36, base * 0.08, 0, 0, base * 1.15);
-    core.addColorStop(0, '#FFFFFF');
-    core.addColorStop(0.18, '#C8FF4A');
-    core.addColorStop(0.4, '#7C9CFF');
-    core.addColorStop(0.68, state === 'listen' ? '#C8FF4A' : '#19D3C5');
-    core.addColorStop(1, state === 'think' ? '#FF4FD8' : '#7C9CFF');
+    var core = ctx.createRadialGradient(-base * 0.32, -base * 0.36, base * 0.05, 0, 0, base * 1.35);
+    core.addColorStop(0, 'rgba(255,255,255,0.95)');
+    core.addColorStop(0.16, 'rgba(200,255,74,0.9)');
+    core.addColorStop(0.38, 'rgba(124,156,255,0.85)');
+    core.addColorStop(0.62, state === 'listen' ? 'rgba(200,255,74,0.45)' : 'rgba(25,211,197,0.4)');
+    core.addColorStop(1, 'rgba(124,156,255,0)');
     ctx.fillStyle = core;
-    ctx.shadowColor = state === 'listen' ? '#C8FF4A' : '#7C9CFF';
-    ctx.shadowBlur = 24 * s.dpr;
     ctx.fill();
-    ctx.shadowBlur = 0;
     ctx.beginPath();
     ctx.ellipse(-base * 0.28, -base * 0.32, base * 0.22, base * 0.11, -0.7, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(255,255,255,.62)';
     ctx.fill();
     ctx.restore();
+    /* Force a soft circular falloff so corners of the bitmap stay empty. */
+    ctx.globalCompositeOperation = 'destination-in';
+    var mask = ctx.createRadialGradient(cx, cy, reach * 0.42, cx, cy, reach);
+    mask.addColorStop(0, 'rgba(0,0,0,1)');
+    mask.addColorStop(0.7, 'rgba(0,0,0,0.45)');
+    mask.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = mask;
+    ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = 'source-over';
   }
 
   function frame(t) {

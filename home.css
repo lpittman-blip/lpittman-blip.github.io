@@ -29,9 +29,9 @@
   .top .actions { margin-left: auto; }
 }
 
-.hero { position: relative; text-align: center; padding: 28px 0 20px; overflow: hidden; }
-.hero-orb { width: min(280px, 72vw); height: min(280px, 72vw); margin: 0 auto; }
-.hero-orb canvas, .orb { width: 100%; height: 100%; display: block; }
+.hero { position: relative; text-align: center; padding: 28px 0 20px; overflow: visible; }
+.hero-orb { width: min(320px, 78vw); height: min(320px, 78vw); margin: 0 auto; background: transparent; border: 0; box-shadow: none; overflow: visible; }
+.hero-orb canvas, canvas[data-orb] { width: 100%; height: 100%; display: block; background: transparent; border: 0; box-shadow: none; }
 .status-chip {
   display: inline-flex; align-items: center; gap: 8px; min-height: 36px; margin-top: 4px;
   padding: 0 14px; border-radius: var(--pill); border: 1px solid var(--line); background: var(--surface);
