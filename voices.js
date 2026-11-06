@@ -19,6 +19,13 @@
   var pulseTimer = 0;
   var generation = 0;
   var current = null;
+  var csrfToken = '';
+
+  function currentCsrf() {
+    if (csrfToken) return csrfToken;
+    if (typeof root.ARTEMIS_CSRF === 'string') return root.ARTEMIS_CSRF;
+    return '';
+  }
 
   function configuredEndpoint() {
     var fromWindow = typeof root.ARTEMIS_TTS_ENDPOINT === 'string' ? root.ARTEMIS_TTS_ENDPOINT.trim() : '';
@@ -114,10 +121,13 @@
   }
 
   async function speakProxy(text, voiceId, hooks, token) {
+    var headers = { 'Content-Type': 'application/json', Accept: 'audio/mpeg, audio/wav, audio/*' };
+    var csrf = currentCsrf();
+    if (csrf) headers['X-CSRF-Token'] = csrf;
     var response = await fetch(endpoint, {
       method: 'POST',
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json', Accept: 'audio/mpeg, audio/wav, audio/*' },
+      headers: headers,
       body: JSON.stringify({ text: text, voice_id: voiceId })
     });
     if (!response.ok) throw new Error('tts ' + response.status);
@@ -217,7 +227,15 @@
             var id = voice.voice_id || voice.id;
             return id ? { id: id, label: (voice.name || id) + ' · ElevenLabs', provider: 'elevenlabs' } : null;
           }).filter(Boolean);
-          if (voices.length) { provider = 'elevenlabs'; return voices; }
+          if (voices.length) {
+            voices.sort(function (a, b) {
+              var prefer = '21m00Tcm4TlvDq8ikWAM';
+              if (a.id === prefer) return -1;
+              if (b.id === prefer) return 1;
+              return (a.label || '').localeCompare(b.label || '');
+            });
+            provider = 'elevenlabs'; return voices;
+          }
         }
       } catch (e) {}
     }
@@ -245,6 +263,7 @@
   }
 
   root.ArtemisVoices = {
+    setCsrf: function (token) { csrfToken = token || ''; root.ARTEMIS_CSRF = csrfToken; },
     get provider() { return provider; },
     get speaking() { return speaking; },
     get endpoint() { return endpoint; },

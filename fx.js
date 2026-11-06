@@ -118,8 +118,8 @@
     var reach = Math.min(w, h) * 0.5 - Math.max(2, s.dpr);
     var base = reach * 0.36;
     var state = canvas.getAttribute('data-state') || (canvas.getAttribute('data-orb') === 'agent' ? agent : 'idle');
-    var energy = still ? 0.2 : (state === 'speak' || state === 'listen' ? amp : state === 'think' ? 0.55 : 0.18);
-    var speed = state === 'think' ? 2.4 : state === 'speak' ? 1.8 : state === 'listen' ? 1.5 : 0.7;
+    var energy = still ? 0.2 : (state === 'speak' || state === 'listen' ? Math.max(amp, 0.35) : state === 'think' ? 0.72 : 0.18);
+    var speed = state === 'think' ? 3.2 : state === 'speak' ? 1.8 : state === 'listen' ? 1.5 : 0.7;
     ctx.clearRect(0, 0, w, h);
     ctx.shadowBlur = 0;
     ctx.shadowColor = 'transparent';

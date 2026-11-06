@@ -364,6 +364,8 @@
     finally { password.value = ''; authSubmit.disabled = false; }
   });
   async function signedIn() {
+    if (window.ArtemisVoices) ArtemisVoices.setCsrf(user && user.csrf);
+    fillVoices();
     accountState();
     drafts = {}; pending = {};
     try { const cache = JSON.parse(localStorage.getItem('artemis.drafts.' + user.id) || '{}'); drafts = cache.drafts || {}; pending = cache.pending || {}; } catch {}
@@ -441,7 +443,7 @@
   const auto = node('label', 'voice-auto'), autoInput = node('input');
   autoInput.type = 'checkbox'; autoInput.checked = autoRead; autoInput.id = 'auto-read';
   autoInput.addEventListener('change', () => { autoRead = autoInput.checked; try { localStorage.setItem(AUTO_KEY, autoRead ? '1' : '0'); } catch {} });
-  auto.append(autoInput, document.createTextNode(' Read replies aloud'));
+  auto.append(autoInput, document.createTextNode(' Speak replies (off by default)'));
   voiceBar.append(voiceNote, voiceSelect, preview, auto, button('Pause', () => { if (window.ArtemisVoices) ArtemisVoices.pause(); voiceEvent('pause', speechMessage, voiceSelect.value); }), button('Resume', () => { if (window.ArtemisVoices) ArtemisVoices.resume(); voiceEvent('resume', speechMessage, voiceSelect.value); }), button('Stop', stopSpeech));
   composer.append(voiceBar);
   fillVoices();
@@ -453,6 +455,6 @@
   render();
   api('/api/status').then(info => { statusInfo = info; status.title = 'Availability does not certify answer quality.'; showModelStatus(); }).catch(() => { status.textContent = 'Connection unavailable'; });
   loadModels();
-  api('/api/me').then(async response => { user = response.user; if (user) await signedIn(); else { accountState(); render(); } }).catch(() => showNotice('Login service is unavailable. Please try again.'));
+  api('/api/me').then(async response => { user = response.user; if (window.ArtemisVoices) ArtemisVoices.setCsrf(user && user.csrf); if (user) await signedIn(); else { accountState(); render(); } }).catch(() => showNotice('Login service is unavailable. Please try again.'));
   if ('serviceWorker' in navigator) navigator.serviceWorker.register(new URL('sw.js', ASSET_BASE).href, { scope: ASSET_BASE.pathname }).catch(() => {});
 })();
