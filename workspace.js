@@ -213,7 +213,7 @@
     box.replaceChildren(); const messages = branchMessages();
     if (!messages.length) {
       const welcome = node('div', 'workspace-welcome'), prompts = node('div', 'workspace-prompts');
-      welcome.append(node('span', 'eyebrow', 'YOUR ARTEMIS WORKSPACE'), node('h2', '', 'What would you like to create?'), node('p', '', user ? 'Start a conversation. Your messages, branches, and results stay in your account.' : 'Sign in to start a private conversation and continue it on another device.'));
+      welcome.append(node('span', 'eyebrow', 'Artemis'), node('h2', '', 'What should we work on?'), node('p', '', user ? 'Start a conversation. Replies stream in as they are written, and the thread, branches, and results stay in your account. Check important answers.' : 'Sign in with email and password. Conversations are saved to your account so you can continue them on another device.'));
       for (const [label, text] of [['Write & explain code', 'Help me write and explain a Python function.'], ['Research a question', 'Search for current Python documentation and cite your sources.'], ['Work through a problem', 'Help me break down a problem into clear steps.'], ['Run a calculation', 'Use Python to calculate the sum of squares from 1 to 20.']]) {
         const chip = button(label, () => { if (!user) { openAuth(); return; } input.value = text; input.focus(); });
         chip.setAttribute('data-track', 'chat_prompt_' + label.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''));

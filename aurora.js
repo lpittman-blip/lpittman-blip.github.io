@@ -58,6 +58,34 @@
       setTimeout(function () { rv.forEach(function (n) { n.classList.add('in'); }); }, 4000);
     }
 
+    var chips = document.querySelectorAll('[data-mode-title]');
+    var modeTitle = document.getElementById('mode-title');
+    var modeCopy = document.getElementById('mode-copy');
+    chips.forEach(function (b) {
+      b.addEventListener('click', function () {
+        chips.forEach(function (o) { o.setAttribute('aria-selected', o === b ? 'true' : 'false'); });
+        if (modeTitle) modeTitle.textContent = b.getAttribute('data-mode-title');
+        if (modeCopy) modeCopy.textContent = b.getAttribute('data-mode-copy');
+      });
+    });
+
+    var heroOrb = document.querySelector('.hero-orb');
+    var motionOff = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (heroOrb && !motionOff) {
+      var ticking = false;
+      var lift = function () {
+        ticking = false;
+        if (root.getAttribute('data-motion') === 'paused') { heroOrb.style.transform = ''; return; }
+        var y = Math.min(window.scrollY || 0, 420);
+        heroOrb.style.transform = 'translate3d(0,' + (y * 0.12).toFixed(1) + 'px,0)';
+      };
+      window.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(lift);
+      }, { passive: true });
+    }
+
     var $ = function (id) { return document.getElementById(id); };
     if (!$('st-chat') && !$('hero-dot')) return;
     var API = 'https://api.artemisai-bycutlineindustries.studio';

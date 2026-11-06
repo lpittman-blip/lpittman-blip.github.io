@@ -209,7 +209,7 @@
       window.ArtemisFX?.mountOrb(canvas);
     }
     const heading = welcome?.querySelector('h2');
-    if (heading && heading.textContent !== 'What would you like to create?') heading.textContent = 'What would you like to create?';
+    if (heading && heading.textContent !== 'What should we work on?') heading.textContent = 'What should we work on?';
     box.querySelectorAll('.msg.sys').forEach(msg => {
       const streaming = !!msg.querySelector('.message-state:not(.message-error)');
       msg.classList.toggle('is-streaming', streaming);

@@ -7,10 +7,12 @@
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="icon" href="../artemis-icon.svg">
 <link rel="apple-touch-icon" href="../artemis-icon-192.png">
-<meta name="theme-color" content="#07080D">
+<meta name="theme-color" content="#ffffff">
 <meta name="description" content="Sign in or create an Artemis account. Conversations stay private to that account.">
 <link rel="canonical" href="https://artemisai-bycutlineindustries.studio/account/">
-<link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,400;6..144,500&display=swap">
 <link rel="stylesheet" href="/fonts.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="/fonts.css"></noscript>
 <link rel="stylesheet" href="/tokens.css">
@@ -23,7 +25,7 @@
 </head>
 <body data-start="account">
 <a class="skip-chat" href="#content">Skip to content</a>
-<canvas class="field" data-field aria-hidden="true"></canvas>
+<canvas class="field" data-field="quiet" aria-hidden="true"></canvas>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="mark-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7C9CFF"/><stop offset=".55" stop-color="#19D3C5"/><stop offset="1" stop-color="#FF4FD8"/></linearGradient><symbol id="mark" viewBox="0 0 32 32"><path d="M5 23c3.4-13 18.6-13 22 0" fill="none" stroke="url(#mark-grad)" stroke-width="3" stroke-linecap="round"/></symbol></defs></svg>
 <header class="nav">
 <div class="wrap">
@@ -34,7 +36,7 @@
 <button type="button" data-go="products">Products</button>
 <button type="button" data-go="account" id="accountNav">Sign in</button>
 </nav>
-<a class="btn btn-primary" href="../">Home</a>
+<a class="btn btn-primary" href="../chat/">Open Chat</a>
 <button class="btn menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
 </div>
 </header>
@@ -62,25 +64,25 @@
 </section>
 <section class="view" id="view-products" data-view="products" hidden>
 <div class="wrap chapters">
-<header class="page-head"><span class="eyebrow">Products</span><h1>Everything Artemis. In one place.</h1><p>Artemis Chat and the Workspace are live today for anyone with an account. The CLI and the API are for developers, with access by request.</p></header>
-<article class="chapter"><div><span class="eyebrow">Live · Conversations</span><h2>Artemis Chat</h2><p>Private conversations with streaming replies, web search, history search, message edits, and Markdown or JSON export. Conversations are saved to your account.</p><p class="product-status">Account required. Chat is currently answered by a labelled bootstrap model while Artemis's own model is trained.</p><a class="btn btn-primary" href="../chat/" data-track="products_open_chat">Open Chat</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>artemis / chat · example</span></div><div class="win-body"><div class="bub u">Explain what this regex does: <code>^\d{3}-\d{4}$</code></div><div class="bub a">It matches a whole string made of three digits, a hyphen, then four digits — like 555-0123.</div></div></div></article>
-<article class="chapter"><div><span class="eyebrow">Live · Included in Chat</span><h2>Artemis Workspace</h2><p>Switch between your conversation, code, and tool activity, so the work behind an answer stays right next to it.</p><p class="product-status">Tools depend on your plan and the model configuration.</p><a class="btn" href="../chat/?panel=code" data-track="products_workspace">Explore Workspace</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>workspace · code · example</span></div><pre class="term"><span class="c"># you: make this function handle an empty list</span>
+<header class="page-head"><span class="eyebrow">Products</span><h1>Artemis Chat, the Workspace, and developer access.</h1><p>Artemis Chat and the Workspace are in the browser for anyone who creates an account with an email and a password. Replies stream into a conversation that is saved to that account. The CLI and the API are for developers. They are not part of signup; you ask, and access is provisioned on request. Plan names and prices are not published here. [OWNER TO CONFIRM]</p></header>
+<article class="chapter"><div><span class="eyebrow">Live · Conversations</span><h2>Artemis Chat</h2><p>Artemis Chat is a private conversation at /chat. Replies stream in while they are written. You can search history, rename or archive a thread, edit a message without losing the earlier branch, and export the conversation as Markdown or JSON. Web search is described on the site as currently via Wikipedia, along with reading a public web page, when those tools are on.</p><p class="product-status">Account required. Chat is currently answered by a labelled bootstrap model while Artemis's own model is trained.</p><a class="btn btn-primary" href="../chat/" data-track="products_open_chat">Open Chat</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>artemis / chat · example</span></div><div class="win-body"><div class="bub u">Explain what this regex does: <code>^\d{3}-\d{4}$</code></div><div class="bub a">It matches a whole string made of three digits, a hyphen, then four digits — like 555-0123.</div></div></div></article>
+<article class="chapter"><div><span class="eyebrow">Live · Included in Chat</span><h2>Artemis Workspace</h2><p>The Workspace is included in Chat. Tabs move between the conversation, tool activity, and code, so a tool step, its sources, and any Python it ran stay next to the answer. Which tools run depends on your plan and the model configuration. This site does not list those plans.</p><p class="product-status">Tools depend on your plan and the model configuration.</p><a class="btn" href="../chat/?panel=code" data-track="products_workspace">Explore Workspace</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>workspace · code · example</span></div><pre class="term"><span class="c"># you: make this function handle an empty list</span>
 def average(xs):
     if not xs:
         return 0.0
     return sum(xs) / len(xs)</pre></div></article>
-<article class="chapter"><div><span class="eyebrow">Developers · By request</span><h2>Artemis CLI</h2><p>A terminal coding agent. It finds context in your repository with glob, grep and ranged file reads instead of a vector database, and <code>artemis serve</code> runs a local API server with OpenAPI docs.</p><p class="product-status">Available to developers by request.</p><a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20CLI%20access" data-track="products_cli_request">Ask about the CLI</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>artemis-cli · by request</span></div><pre class="term">$ artemis serve
+<article class="chapter"><div><span class="eyebrow">Developers · By request</span><h2>Artemis CLI</h2><p>Artemis CLI is a terminal coding agent for developers, by request. It finds context in a repository with glob, grep, and ranged file reads instead of a vector database. <code>artemis serve</code> runs a local API on port 7777, with OpenAPI docs at /docs. Login defaults to api.artemisai-bycutlineindustries.studio.</p><p class="product-status">Available to developers by request.</p><a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20CLI%20access" data-track="products_cli_request">Ask about the CLI</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>artemis-cli · by request</span></div><pre class="term">$ artemis serve
 # local server on :7777, docs at /docs
 $ artemis login --key art_…
 # defaults to api.artemisai-bycutlineindustries.studio</pre></div></article>
-<article class="chapter"><div><span class="eyebrow">Developers · By request</span><h2>Artemis API</h2><p>Integrate Artemis into your own application with server-side API keys. Streaming chat, an OpenAI-compatible chat completions endpoint, and per-account memory.</p><p class="product-status">Access is provisioned on request.</p><a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20API%20access" data-track="products_api_request">Ask about API access</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>api · by request</span></div><pre class="term"># streaming chat
+<article class="chapter"><div><span class="eyebrow">Developers · By request</span><h2>Artemis API</h2><p>The Artemis API is how your own application would call Artemis, also by request. It provides streaming chat, an OpenAI-compatible chat completions endpoint, and per-account memory. API keys stay on the server.</p><p class="product-status">Access is provisioned on request.</p><a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20API%20access" data-track="products_api_request">Ask about API access</a></div><div class="win" aria-hidden="true"><div class="win-bar"><i></i><i></i><i></i><span>api · by request</span></div><pre class="term"># streaming chat
 # OpenAI-compatible chat completions
 # per-account memory · server-side API keys</pre></div></article>
 </div>
 </section>
 <section class="view" id="view-account" data-view="account">
 <div class="wrap">
-<div class="page-head"><canvas class="orb orb-account" data-orb width="200" height="200" aria-hidden="true"></canvas><span class="eyebrow">Your account</span><h1>Your space with Artemis.</h1><p>Create an account or sign in to keep your Artemis conversations private and pick them up on any device. You can export your data or delete your chats from your account settings at any time.</p></div>
+<div class="page-head"><canvas class="orb orb-account" data-orb width="200" height="200" aria-hidden="true"></canvas><span class="eyebrow">Your account</span><h1>Your space with Artemis.</h1><p>Create an account or sign in with email and password. Conversations are private to that account and can be opened on another device. You can export a conversation as Markdown or JSON, export the account as JSON, and choose whether inactive conversations are kept until you delete them or removed after 30, 90, or 365 inactive days. Deleting a conversation removes its live database records. Hosting backups follow a separate expiry policy.</p></div>
 <div id="account-page-content"></div>
 <p class="privacy-note">Conversations are private to your account. Export or delete them any time.</p>
 </div>

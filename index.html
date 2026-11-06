@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Artemis AI — chat with it, code with it, build with it · Cutline Industries</title>
-  <meta name="description" content="Artemis is the AI assistant from Cutline Industries in the Bronx, NY. Chat, research and write code with it, with conversations saved to your account. Its own mixture-of-experts model is being trained from scratch.">
-  <meta name="theme-color" content="#07080D">
+  <title>Artemis AI · the assistant from Cutline Industries</title>
+  <meta name="description" content="Artemis is the AI assistant from Cutline Industries in the Bronx. Chat in the browser with an account, saved conversations, web tools, code, and browser read-aloud. The CLI and API are by request.">
+  <meta name="theme-color" content="#ffffff">
   <meta property="og:title" content="Artemis AI by Cutline Industries">
-  <meta property="og:description" content="Chat with it. Code with it. Build with it. Open Artemis Chat at artemisai-bycutlineindustries.studio/chat.">
+  <meta property="og:description" content="Artemis is the AI assistant from Cutline Industries. Chat in the browser with an account. Conversations are saved to you. The CLI and API are by request.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://artemisai-bycutlineindustries.studio/">
   <link rel="canonical" href="https://artemisai-bycutlineindustries.studio/">
   <script>try{if(localStorage.getItem('artemis-motion')==='paused')document.documentElement.setAttribute('data-motion','paused')}catch(e){}</script>
   <link rel="preconnect" href="https://api.artemisai-bycutlineindustries.studio">
-  <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,400;6..144,500&display=swap">
   <link rel="stylesheet" href="/fonts.css" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="/fonts.css"></noscript>
   <link rel="icon" href="artemis-icon.svg">
@@ -27,7 +29,6 @@
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
-<canvas class="field" data-field aria-hidden="true"></canvas>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="mark-grad" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7C9CFF"/><stop offset=".55" stop-color="#19D3C5"/><stop offset="1" stop-color="#FF4FD8"/></linearGradient>
@@ -36,7 +37,7 @@
 </svg>
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="Artemis AI home" data-track="nav_home"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>Artemis AI</a>
+    <a class="brand" href="/" aria-label="Artemis AI home" data-track="nav_home"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>Artemis</a>
     <nav class="menu" aria-label="Primary">
       <a href="#what" data-track="nav_platform">Platform</a>
       <a href="/products/" data-track="nav_products">Products</a>
@@ -45,9 +46,9 @@
     </nav>
     <div class="actions">
       <a class="signin tlink" href="/account/" data-track="nav_sign_in">Sign in</a>
-      <a class="btn primary sm" href="/chat/" data-track="nav_launch">Launch Artemis</a>
+      <a class="btn primary sm" href="/chat/" data-track="nav_launch">Try Artemis</a>
     </div>
-    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 6h12M3 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 5h12M3 9h12M3 13h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
   </div>
   <nav class="drawer" id="drawer" aria-label="Mobile">
     <a href="#what" data-track="mnav_platform">Platform</a>
@@ -55,195 +56,219 @@
     <a href="/chat/" data-track="mnav_chat">Chat</a>
     <a href="#status" data-track="mnav_status">Status</a>
     <a href="/account/?mode=signup" data-track="mnav_sign_in">Sign in / Create account</a>
-    <a class="btn primary" href="/chat/" data-track="mnav_launch">Launch Artemis</a>
   </nav>
 </header>
 <main id="content">
   <section class="hero" aria-labelledby="hero-title">
-    <div class="wrap">
-      <div class="hero-orb"><canvas data-orb width="320" height="320" aria-hidden="true"></canvas></div>
-      <a class="status-chip" href="#status" data-track="hero_status"><span class="dot" id="hero-dot"></span><span id="hero-state">Checking Artemis Chat…</span></a>
-      <h1 id="hero-title"><span class="verb" id="verb">Chat</span><span class="caret" aria-hidden="true"></span> with it.</h1>
-      <p class="lede">Artemis is the AI assistant made by Cutline Industries. Ask questions, research with the web, and write, fix and explain code — in private conversations saved to your account.</p>
+    <canvas class="field" data-field="rings" aria-hidden="true"></canvas>
+    <div class="hero-orb"><canvas data-orb width="640" height="360" aria-hidden="true"></canvas></div>
+    <div class="wrap hero-copy">
+      <h1 id="hero-title">Artemis is the AI assistant from Cutline Industries, used in the browser.</h1>
+      <p class="lede">You create an account with email and password, then talk to Artemis at /chat. Replies stream in as they are written and are saved to that account. You can research with the web tools the gateway has turned on, write and review code, and have a reply read aloud with your browser’s own speech. Cutline Industries is training Artemis’s own model. Until that model is ready, Chat is answered by a labelled bootstrap model, and the app says so.</p>
       <div class="ctas">
-        <a class="btn primary" href="/chat/" data-track="hero_launch">Launch Artemis</a>
+        <a class="btn primary" href="/chat/" data-track="hero_launch">Try Artemis</a>
         <a class="btn" href="/account/?mode=signup" data-track="hero_create_account">Create an account</a>
       </div>
-      <p class="note">Account required to chat · email and password</p>
+      <a class="status-chip" href="#status" data-track="hero_status"><span class="dot" id="hero-dot"></span><span id="hero-state">Checking Artemis Chat…</span></a>
     </div>
   </section>
 
-  <section class="chapter" id="family" aria-labelledby="family-title">
+  <section class="stage" id="what" aria-labelledby="mode-title">
     <div class="wrap">
-      <span class="eyebrow rv">Model family</span>
-      <h2 class="rv" id="family-title">Artemis models</h2>
-      <p class="intro rv">Three models. One assistant. Built by Cutline Industries.</p>
-      <div class="models">
-        <article class="model-card rv"><div class="tag">From-scratch flagship</div><h3>Artemis Prime</h3><p>Custom mixture-of-experts architecture trained from random initialization. Coming soon.</p></article>
-        <article class="model-card rv"><div class="tag">14B main model</div><h3>Artemis Apex</h3><p>Self-improving fine-tune of Qwen2.5-14B. Balanced for reasoning and everyday use.</p></article>
-        <article class="model-card rv"><div class="tag">7B fast model</div><h3>Artemis Swift</h3><p>Self-improving fine-tune of Qwen2.5-7B. Optimized for speed and high volume.</p></article>
+      <h2 class="rv" id="mode-title">What Artemis Chat does today</h2>
+      <p class="intro rv" id="mode-copy">Artemis Chat is a signed-in conversation in your browser. You type a message, the reply streams back while it is written, and the thread is saved to your account so you can open it again on another device. You can search that history, rename a conversation, archive it, or delete its live database records. Editing a message keeps the earlier branch. You can copy an answer, mark it helpful or not helpful, or ask Artemis to try again.</p>
+      <div class="chips rv" role="tablist" aria-label="Parts of Artemis">
+        <button type="button" role="tab" aria-selected="true" data-track="mode_chat" data-mode-title="What Artemis Chat does today" data-mode-copy="Artemis Chat is a signed-in conversation in your browser. You type a message, the reply streams back while it is written, and the thread is saved to your account so you can open it again on another device. You can search that history, rename a conversation, archive it, or delete its live database records. Editing a message keeps the earlier branch. You can copy an answer, mark it helpful or not helpful, or ask Artemis to try again.">Chat</button>
+        <button type="button" role="tab" aria-selected="false" data-track="mode_code" data-mode-title="Code, next to the conversation" data-mode-copy="The Workspace is included in Chat. Its tabs move between the conversation, tool activity, and code. When a permitted tool runs, the steps and any sources stay with the answer, including Python the tool executed and the output. You can ask Artemis to write, explain, or change code, then edit your message and take the thread in a new direction. Which tools are available depends on your plan and the model configuration. This site does not publish plan names or prices.">Code</button>
+        <button type="button" role="tab" aria-selected="false" data-track="mode_voice" data-mode-title="Read-aloud and dictation" data-mode-copy="A finished reply can be read aloud with the speech already in your browser. You pick a voice, preview it, and pause, resume, or stop. You can also turn on Read replies aloud. If your browser supports speech recognition, a microphone button writes what you say into the message box. Account settings state that raw audio recording is not enabled. These pages do not turn on a separate hosted voice service, so the voice list stays on browser voices unless that service is configured later.">Voice</button>
+        <button type="button" role="tab" aria-selected="false" data-track="mode_account" data-mode-title="Your account holds the conversations" data-mode-copy="An account is an email and a password. A new password must be at least 12 characters. Conversations are private to that account and are not automatically used to train Artemis. You can export one conversation as Markdown or JSON, or export the account as JSON. You choose how long inactive conversations are kept: until you delete them, or after 30, 90, or 365 inactive days. Deleting a conversation removes live database records. Hosting backups follow a separate expiry policy.">Your account</button>
       </div>
     </div>
   </section>
 
-  <section class="chapter" id="what" aria-labelledby="what-title">
-    <div class="wrap split">
-      <div class="chapter-copy">
-        <span class="eyebrow rv">What Artemis is</span>
-        <h2 class="rv" id="what-title">An assistant you talk to — and a model built from scratch.</h2>
-        <p class="rv">Today, Artemis is a chat assistant at <a class="tlink" href="/chat/" data-track="what_chat">/chat</a> with saved conversations, web tools and a code workspace. Underneath, Cutline Industries is training Artemis's own mixture-of-experts model from random initialization — not a fine-tune, not a wrapper. Until that model is ready, Chat is answered by a bootstrap model, and the app says so.</p>
-      </div>
-      <dl class="facts">
-        <div class="rv"><dt>Where</dt><dd>In your browser at /chat, on desktop and mobile</dd></div>
-        <div class="rv"><dt>Your data</dt><dd>Conversations are saved to your account and are not automatically used to train Artemis</dd></div>
-        <div class="rv"><dt>Design rule</dt><dd>Artemis's own model never calls an outside AI model in its reasoning</dd></div>
-        <div class="rv"><dt>Made by</dt><dd>Cutline Industries, Bronx, New York</dd></div>
-      </dl>
-    </div>
-  </section>
-
-  <section class="chapter" id="chat-with-it">
-    <div class="wrap split">
-      <div class="chapter-copy rv">
-        <span class="eyebrow">01 · Chat</span>
-        <h2>Chat with it</h2>
-        <p>Ask, follow up and change direction. Replies stream in as they are written.</p>
-        <ul>
-          <li>Private, saved conversations you can pick up on another device</li>
-          <li>Web search (currently via Wikipedia) and reading a public web page</li>
-          <li>Search your history; export a chat as Markdown or JSON</li>
-          <li>Have replies read aloud with your browser's built-in speech</li>
-        </ul>
-        <a class="btn primary" href="/chat/" data-track="feature_chat">Open Chat</a>
-      </div>
-      <div class="win rv" aria-hidden="true">
-        <div class="win-bar"><i></i><i></i><i></i><span>artemis / chat · example</span></div>
-        <div class="win-body">
-          <div class="bub u">Explain what this regex does: <code>^\d{3}-\d{4}$</code></div>
-          <div class="bub a">It matches a whole string made of three digits, a hyphen, then four digits — like <code>555-0123</code></div>
-          <div class="composer-fake">Message Artemis<b>↑</b></div>
-        </div>
+  <section class="chapter" id="family" aria-labelledby="cards-title">
+    <div class="wrap">
+      <h2 class="rv" id="cards-title">What you can do with it</h2>
+      <p class="prose rv">These are the jobs the chat workspace already offers. The live status card further down shows which gateway tools are on right now, because search, page reading, voice input, and file upload are reported by the API rather than promised as always available.</p>
+      <div class="cards four">
+        <article class="card rv">
+          <span class="flag">In Chat</span>
+          <h3>Write and explain code</h3>
+          <p>Ask Artemis to write a function, explain a snippet, or change code you paste in. Answers can include fenced code blocks you can copy. The Code tab collects code from the answer and any Python a tool actually ran, with its output. The starter prompts in an empty chat include writing a Python function and calculating with Python.</p>
+        </article>
+        <article class="card rv">
+          <span class="flag">When the tool is on</span>
+          <h3>Research a question</h3>
+          <p>The site describes web search as currently via Wikipedia, plus reading a public web page. When a tool returns sources, Chat lists up to five of them under the tool step. The status card shows whether web search and page reading are on in the gateway you are visiting, and which search provider it reports.</p>
+        </article>
+        <article class="card rv">
+          <span class="flag">In the browser</span>
+          <h3>Listen, or dictate</h3>
+          <p>Read aloud uses your browser’s speech synthesis. The voice picker lists those voices, and the orb pulses while Artemis is speaking. Dictation appears only when the browser provides speech recognition, and it fills the message box. It is not a stored recording. Account settings say raw audio recording and file uploads are not enabled.</p>
+        </article>
+        <article class="card rv">
+          <span class="flag">Saved to you</span>
+          <h3>Keep the thread</h3>
+          <p>Conversations are saved on your account, not only in the tab you have open. The browser keeps a draft of what you are typing. You can search past chats, export them, and pick them up after you sign in on another device. The composer reminds you to check important answers.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="chapter" id="code-with-it">
-    <div class="wrap split">
-      <div class="chapter-copy rv">
-        <span class="eyebrow">02 · Workspace</span>
-        <h2>Code with it</h2>
-        <p>Have Artemis write, explain, debug and review code. The Workspace panel keeps the conversation, the code and the tool activity side by side, so the work behind an answer stays with it.</p>
-        <ul>
-          <li>Switch between Chat and Code in the same conversation</li>
-          <li>Edit a message and take the answer in a new direction</li>
-        </ul>
-        <a class="btn" href="/chat/?panel=code" data-track="feature_workspace">Explore Workspace</a>
-      </div>
-      <div class="win rv" aria-hidden="true">
-        <div class="win-bar"><i></i><i></i><i></i><span>workspace · code · example</span></div>
-<pre class="term"><span class="c"># you: make this function handle an empty list</span>
-<span class="k">def</span> average(xs):
-    <span class="k">if not</span> xs:
-        <span class="k">return</span> 0.0
-    <span class="k">return</span> sum(xs) / len(xs)</pre>
+  <section class="chapter" id="meet" aria-labelledby="meet-title">
+    <div class="wrap meet">
+      <div class="hero-orb rv"><canvas data-orb width="640" height="360" aria-hidden="true"></canvas></div>
+      <h2 class="rv" id="meet-title">Meet Artemis</h2>
+      <div class="prose center rv">
+        <p>The ring on this page is the Artemis orb, the same mark that sits with a conversation in Chat. It is drawn as particles on a light page. While a reply is read aloud, the ring pulses with that voice. If you would rather it stay still, Pause motion in the footer stops the animation, and the page also respects a reduced-motion setting from your device.</p>
+        <p>Voices default to the ones built into the browser you already have. You can preview a line, choose a voice, and set replies to be read automatically when they finish. Pause, resume, and stop are in the voice controls under the message box. A hosted voice service is possible only through a server endpoint configured for the page. This site never puts a voice-service key in the browser, and these pages do not set that endpoint, so a visit uses browser speech.</p>
+        <p>Chat itself runs at <a class="tlink" href="/chat/">/chat</a> on desktop and on a phone. There is no separate app described on this site. Sign-in, sign-up, and login addresses all bring you to the account page.</p>
       </div>
     </div>
   </section>
 
-  <section class="chapter" id="build-with-it">
-    <div class="wrap split">
-      <div class="chapter-copy rv">
-        <span class="eyebrow">03 · CLI</span>
-        <h2>Build with it</h2>
-        <p><b>Artemis CLI</b> finds context in a repository with <code>glob</code>, <code>grep</code> and ranged file reads; no vector database. <code>artemis serve</code> runs a local API with OpenAPI docs. Available by request.</p>
-        <a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20developer%20access" data-track="feature_dev_access">Ask about developer access</a>
-      </div>
-      <div class="win rv" aria-hidden="true">
-        <div class="win-bar"><i></i><i></i><i></i><span>artemis-cli · by request</span></div>
-<pre class="term"><span class="p">$ </span>artemis serve
-<span class="c"># local server on :7777, docs at /docs</span>
-<span class="p">$ </span>artemis login --key art_…
-<span class="c"># defaults to api.artemisai-bycutlineindustries.studio</span></pre>
-      </div>
-    </div>
-  </section>
-
-  <section class="chapter" id="api">
-    <div class="wrap split">
-      <div class="chapter-copy rv">
-        <span class="eyebrow">04 · API</span>
-        <h2>Artemis API</h2>
-        <p>Streaming chat, an OpenAI-compatible chat completions endpoint and per-account memory, with server-side API keys. Access is by request.</p>
-        <a class="btn" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20API%20access" data-track="feature_api">Ask about API access</a>
-      </div>
-      <div class="win rv" aria-hidden="true">
-        <div class="win-bar"><i></i><i></i><i></i><span>api · by request</span></div>
-<pre class="term"><span class="c"># streaming chat</span>
-<span class="c"># OpenAI-compatible chat completions</span>
-<span class="c"># per-account memory · server-side API keys</span>
-<span class="p"># </span>api.artemisai-bycutlineindustries.studio</pre>
+  <section class="chapter" id="products-home" aria-labelledby="products-title">
+    <div class="wrap">
+      <h2 class="rv" id="products-title">The products</h2>
+      <p class="prose rv">Artemis Chat and the Workspace are live for anyone with an account. The CLI and the API are for developers, and access is opened by request rather than from a signup form.</p>
+      <div class="cards">
+        <article class="card rv">
+          <span class="flag">Live · account required</span>
+          <h3>Artemis Chat</h3>
+          <p>Private conversations with streaming replies, history search, message edits, and Markdown or JSON export. Chat is currently answered by a labelled bootstrap model while Artemis’s own model is trained. The status card names what is answering.</p>
+          <a class="btn primary" href="/chat/" data-track="feature_chat">Try Artemis</a>
+        </article>
+        <article class="card rv">
+          <span class="flag">Included in Chat</span>
+          <h3>Workspace</h3>
+          <p>Switch between the conversation, code, and tool activity so the work behind an answer stays next to it. Open it from Chat with the Code panel. Tools depend on your plan and the model configuration.</p>
+          <a class="btn" href="/chat/?panel=code" data-track="feature_workspace">Open the Workspace</a>
+        </article>
+        <article class="card rv">
+          <span class="flag">By request</span>
+          <h3>CLI and API</h3>
+          <p>The CLI finds context in a repository with glob, grep, and ranged file reads, not a vector database. <code>artemis serve</code> runs a local API with OpenAPI docs. The API adds streaming chat, an OpenAI-compatible chat completions endpoint, per-account memory, and server-side keys.</p>
+          <a class="btn" href="/products/" data-track="feature_dev_access">Read the product notes</a>
+        </article>
       </div>
     </div>
   </section>
 
   <section class="chapter" id="how" aria-labelledby="how-title">
     <div class="wrap">
-      <span class="eyebrow rv">How it works</span>
-      <h2 class="rv" id="how-title">One orchestrator, ten specialists — and a status you can check.</h2>
-      <div class="how">
-        <div>
-          <ol class="steps">
-            <li class="rv"><div><b>Artemis reads your request</b><span>The orchestrator decides which specialist brains to involve and hands each a focused sub-task.</span></div></li>
-            <li class="rv"><div><b>Specialists do the work</b><span>Saturn handles code, Neptune research, Uranus math, Mercury memory, Pluto system design, and so on.</span></div></li>
-            <li class="rv"><div><b>Venus audits it</b><span>Before Artemis answers, Venus checks the other brains' work for errors and unsupported claims.</span></div></li>
-            <li class="rv"><div><b>Artemis writes the answer</b><span>One reply, streamed back into your conversation and saved to your account.</span></div></li>
-          </ol>
-          <ul class="brains rv">
-            <li>Artemis</li><li>Venus</li><li>Saturn</li><li>Pluto</li><li>Neptune</li><li>Uranus</li><li>Mercury</li><li>Mars</li><li>Apollo</li><li>Jupiter</li><li>Earth</li>
+      <h2 class="rv" id="how-title">How an answer is described, and what is answering now</h2>
+      <div class="prose rv">
+        <p>The pages describe the design of Artemis’s own model, which is still in training, as one orchestrator and a set of specialists. Artemis reads the request and hands each specialist a focused piece. Saturn is described for code, Neptune for research, Uranus for math, Mercury for memory, and Pluto for system design, with Venus checking the other work for errors and unsupported claims before one reply is written. The names used for that design are Artemis, Venus, Saturn, Pluto, Neptune, Uranus, Mercury, Mars, Apollo, Jupiter, and Earth.</p>
+        <p>That description is the design, not a claim about the weights answering Chat today. Chat runs on a labelled bootstrap model, which the app distinguishes from Artemis’s own weights. A model menu appears in Chat only when the gateway reports more than one model it can serve. The default stays Artemis.</p>
+        <p>A separate design rule is stated for Artemis’s own model: it does not send your request to someone else’s AI model. That rule is meant for teams that cannot send their code to a third-party model provider. It is stated for Artemis’s own model, which is not the bootstrap model in Chat today.</p>
+      </div>
+      <article class="win rv" id="status" aria-labelledby="live-title" style="margin-top:28px">
+        <div class="win-bar"><span class="dot" id="live-dot"></span><span id="live-title">Live · read from the gateway</span></div>
+        <div class="win-body" aria-live="polite">
+          <ul class="kv">
+            <li>Chat<b id="st-chat">Checking…</b></li>
+            <li>Answering model<b id="st-model">Checking…</b></li>
+            <li>Web search<b id="st-search">Checking…</b></li>
+            <li>Read a web page<b id="st-fetch">Checking…</b></li>
+            <li>Conversations<b id="st-storage">Checking…</b></li>
+            <li>Voice input<b id="st-voice">Checking…</b></li>
+            <li>File upload<b id="st-upload">Checking…</b></li>
+            <li>Gateway<b id="st-gw">Checking…</b></li>
+            <li>Right now<b id="st-queue">Checking…</b></li>
           </ul>
-          <p class="src rv">This is the design of Artemis's own model, which is still in training. Chat currently runs on the bootstrap model shown in the status card.</p>
+          <p class="src">From api.artemisai-bycutlineindustries.studio /api/status and /api/health, measured in your browser · <span id="st-when">not checked yet</span></p>
         </div>
-        <article class="win rv" id="status" aria-labelledby="live-title">
-          <div class="win-bar"><span class="dot" id="live-dot"></span><span id="live-title">Live · read from the gateway</span></div>
-          <div class="win-body" aria-live="polite">
-            <ul class="kv">
-              <li>Chat<b id="st-chat">Checking…</b></li>
-              <li>Answering model<b id="st-model">Checking…</b></li>
-              <li>Web search<b id="st-search">Checking…</b></li>
-              <li>Read a web page<b id="st-fetch">Checking…</b></li>
-              <li>Conversations<b id="st-storage">Checking…</b></li>
-              <li>Voice input<b id="st-voice">Checking…</b></li>
-              <li>File upload<b id="st-upload">Checking…</b></li>
-              <li>Gateway<b id="st-gw">Checking…</b></li>
-              <li>Right now<b id="st-queue">Checking…</b></li>
-            </ul>
-            <p class="src">From api.artemisai-bycutlineindustries.studio /api/status and /api/health, measured in your browser · <span id="st-when">not checked yet</span></p>
-          </div>
-        </article>
+      </article>
+    </div>
+  </section>
+
+  <section class="chapter" id="trust" aria-labelledby="trust-title">
+    <div class="wrap">
+      <h2 class="rv" id="trust-title">Privacy and your account</h2>
+      <div class="prose rv">
+        <p>Conversations are private to the account you sign in with. They are saved through the Artemis gateway, and the site states that they are not automatically used to train Artemis. The browser stores drafts of unsent text for that account. It does not keep the conversation log or your password there.</p>
+        <p>From account settings you can export the open conversation as Markdown or JSON, export the whole account as JSON, and set retention: keep conversations until you delete them, or delete them after 30, 90, or 365 inactive days. Deleting a conversation removes live database records. The same screen says hosting backups require a separate expiry policy, so a delete is not described as wiping every backup.</p>
+        <p>That screen also says raw audio recording and file uploads are not enabled. The composer tells you to check important answers. Sign-out is in the same account dialog.</p>
+      </div>
+      <dl class="facts" style="margin-top:20px">
+        <div class="rv"><dt>Where you use it</dt><dd>In the browser at /chat, on desktop and on a phone.</dd></div>
+        <div class="rv"><dt>How you sign in</dt><dd>Email and password. New passwords are at least 12 characters. Sign-in and sign-up both live on the account page.</dd></div>
+        <div class="rv"><dt>What you can take with you</dt><dd>A conversation export, or an export of the account.</dd></div>
+        <div class="rv"><dt>Made by</dt><dd>Cutline Industries, Bronx, New York. The company builds and hosts Artemis.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="chapter" id="access" aria-labelledby="access-title">
+    <div class="wrap">
+      <h2 class="rv" id="access-title">How access works</h2>
+      <div class="prose rv">
+        <p>There is no price list on this site. Artemis Chat and the Workspace are available when you create an account. The CLI and the API are not part of that signup. You email <a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio?subject=Artemis%20developer%20access">support@artemisai-bycutlineindustries.studio</a> and access is provisioned on request.</p>
+        <p>The Workspace says tools depend on your plan and the model configuration. Plan names, prices, and what each plan includes are not written down in this site. <span class="owner-note">[OWNER TO CONFIRM]</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <h2 class="rv" id="faq-title">Questions the site can already answer</h2>
+      <div class="faq rv">
+        <details>
+          <summary>Do I need an account?</summary>
+          <p>Yes. Chat asks you to sign in before a conversation is saved. You use an email and a password. Creating an account requires a password of at least 12 characters. The addresses /login, /sign-in, and /sign-up all send you to the account page.</p>
+        </details>
+        <details>
+          <summary>Which model is answering?</summary>
+          <p>Chat is answered by a labelled bootstrap model while Artemis’s own model is still being trained. The app says when the answer is not from Artemis’s own weights. The status card on this page reads that from the gateway in your browser. A second model shows up in the menu only if the gateway says it can serve it.</p>
+        </details>
+        <details>
+          <summary>Are my chats used to train Artemis?</summary>
+          <p>The site states that conversations are not automatically used to train Artemis. It does not describe any other training use.</p>
+        </details>
+        <details>
+          <summary>Can I export or delete a chat?</summary>
+          <p>Yes. You can export one conversation as Markdown or JSON, export the account as JSON, and delete a conversation’s live database records. You can also set a retention period. Hosting backups are called out as a separate expiry policy.</p>
+        </details>
+        <details>
+          <summary>Can I upload a file or have Artemis call me?</summary>
+          <p>Account settings say file uploads and raw audio recording are not enabled. The status card will say “Not yet” for file upload and voice input when the gateway reports them off. Dictation, when your browser supports it, only fills the text box. Read-aloud plays in the browser. It is not a phone call.</p>
+        </details>
+        <details>
+          <summary>Where do I get the CLI or the API?</summary>
+          <p>Both are by request. The CLI is a terminal agent: glob, grep, and ranged file reads, plus <code>artemis serve</code> on port 7777 with docs at /docs. The API is streaming chat, an OpenAI-compatible chat completions endpoint, per-account memory, and server-side keys. Write to support@artemisai-bycutlineindustries.studio.</p>
+        </details>
+        <details>
+          <summary>Who operates Artemis?</summary>
+          <p>Cutline Industries, Bronx, NY 10467, United States. Support is support@artemisai-bycutlineindustries.studio. The company site linked from this page is cutline-industries.studio. The assistant is hosted by Cutline Industries. Forge, a code-hosting site from the same company, is a separate address and is not part of Chat.</p>
+        </details>
       </div>
     </div>
   </section>
 
   <section class="chapter" id="about" aria-labelledby="about-title">
     <div class="wrap">
-      <span class="eyebrow rv">About</span>
-      <h2 class="rv" id="about-title">Made by Cutline Industries in the Bronx, New York.</h2>
+      <h2 class="rv" id="about-title">Cutline Industries</h2>
       <div class="about">
-        <article class="rv"><p>Artemis AI is a product of Cutline Industries. The company builds and hosts Artemis and is training its model in-house.</p><p>Artemis was designed around one rule: its own model never sends your request to someone else's AI model. That is meant for teams that can't send their code to a third-party model provider.</p></article>
-        <article class="rv"><address>Cutline Industries<br>Bronx, NY 10467, United States<br><a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio" data-track="about_email">support@artemisai-bycutlineindustries.studio</a><br><a class="tlink" href="https://cutline-industries.studio" rel="noopener" data-track="about_company_site">cutline-industries.studio</a></address></article>
+        <article class="rv">
+          <p>Artemis AI is a product of Cutline Industries. The company builds and hosts Artemis and is training its model in-house, in the Bronx, New York.</p>
+          <p>The published design rule for Artemis’s own model is that the model does not send your request on to someone else’s AI model. Chat today still tells you when it is using the bootstrap model instead of that one.</p>
+        </article>
+        <article class="rv">
+          <address>Cutline Industries<br>Bronx, NY 10467, United States<br><a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio" data-track="about_email">support@artemisai-bycutlineindustries.studio</a><br><a class="tlink" href="https://cutline-industries.studio" rel="noopener" data-track="about_company_site">cutline-industries.studio</a></address>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="chapter" aria-labelledby="cta-title">
+  <section class="wordmark" aria-labelledby="mark-title">
+    <canvas class="field" data-field="waves" aria-hidden="true"></canvas>
     <div class="wrap">
-      <div class="finale rv">
-        <h2 id="cta-title">Launch Artemis.</h2>
-        <p>Create an account, open Chat and ask your first question.</p>
-        <div class="ctas">
-          <a class="btn primary" href="/chat/" data-track="cta_launch">Open Artemis Chat</a>
-          <a class="btn" href="/products/" data-track="cta_products">See products</a>
-        </div>
+      <p class="kicker rv">Cutline Industries · Bronx, NY</p>
+      <h2 class="giant rv" id="mark-title">Artemis</h2>
+      <p class="sub rv">An account gets you into Chat and the Workspace. The CLI and the API stay by request. The status card above is read live from the gateway.</p>
+      <div class="ctas rv">
+        <a class="btn primary" href="/chat/" data-track="cta_launch">Try Artemis</a>
+        <a class="btn" href="/account/?mode=signup" data-track="cta_account">Create an account</a>
       </div>
     </div>
   </section>
@@ -251,20 +276,19 @@
 <footer class="foot">
   <div class="wrap">
     <div class="row">
-      <div>
-        <a class="brand" href="/" data-track="footer_home"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>Artemis AI</a>
-        <p class="about-line">Artemis AI is a product of Cutline Industries.</p>
-      </div>
+      <a class="brand" href="/" data-track="footer_home"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>Artemis</a>
       <nav aria-label="Footer">
-        <a class="tlink" href="/chat/" data-track="footer_chat">Chat</a>
-        <a class="tlink" href="/products/" data-track="footer_products">Products</a>
-        <a class="tlink" href="/account/" data-track="footer_sign_in">Sign in</a>
-        <a class="tlink" href="#status" data-track="footer_status">Status</a>
-        <a class="tlink" href="mailto:support@artemisai-bycutlineindustries.studio" data-track="footer_support">Support</a>
+        <a href="/chat/" data-track="footer_chat">Chat</a>
+        <a href="/products/" data-track="footer_products">Products</a>
+        <a href="/account/" data-track="footer_sign_in">Sign in</a>
+        <a href="#status" data-track="footer_status">Status</a>
+        <a href="#faq">Questions</a>
+        <a href="mailto:support@artemisai-bycutlineindustries.studio" data-track="footer_support">Support</a>
       </nav>
       <button class="pause" type="button" data-motion-toggle aria-pressed="false" data-track="motion_toggle"><span class="i" aria-hidden="true">❚❚</span><span class="l">Pause motion</span></button>
     </div>
-    <p class="legal">© 2026 Cutline Industries · Bronx, NY · Hosted by Cutline Industries.</p>
+    <p class="legal">© 2026 Cutline Industries · Bronx, NY 10467 · Hosted by Cutline Industries. Artemis AI is a product of Cutline Industries.</p>
+    <p class="legal">A privacy policy and terms of service are not published in this site. <span class="owner-note">[OWNER TO CONFIRM]</span></p>
   </div>
 </footer>
 </body>
